@@ -61,7 +61,7 @@ class KManager:
         pm.close();
 
     @staticmethod
-    def count_kpi(start_date):
+    def count_kpi(start_date,s=True,m=True):
         pm = PandasToMysql();
         shp = SharePuller();
         df = shp.query_from_mysql();
@@ -72,26 +72,28 @@ class KManager:
         # ================================
         ## 单指标计算
         # ================================
-        for index, row in df.iterrows():
-            code = row['code'];
-            start = str(row['timeToMarket']);
-            if (start_date != None and start < start_date):
-                start = start_date;
-                KManager.kpi_s(code, start_date, pm, dict)
-        print('===kpi result======')
-        print(dict);
+        if(s):
+            for index, row in df.iterrows():
+                code = row['code'];
+                start = str(row['timeToMarket']);
+                if (start_date != None and start < start_date):
+                    start = start_date;
+                    KManager.kpi_s(code, start_date, pm, dict)
+            print('===kpi result======')
+            Logger.log(dict)
 
         # ================================
         ## 多指标计算
         # ================================
-
-        if (start_date == None):
-            start_date = end;
-            KManager.kpi_m(start_date, pm);
-        elif (start_date <= end):
-            for dt in DateUtil.getDateSeq(start_date):
+        if(m):
+            if (start_date == None):
+                start_date = end;
                 KManager.kpi_m(start_date, pm);
-        pm.close();
+            elif (start_date <= end):
+                for dt in DateUtil.getDateSeq(start_date):
+                    Logger.log('m kip,dt='+dt);
+                    KManager.kpi_m(dt, pm);
+            pm.close();
 
     @staticmethod
     def kpi_s(code,start_date,pm,dict):
@@ -120,5 +122,6 @@ class KManager:
 if (__name__ == '__main__'):
     #pm = PandasToMysql();
     #KManager.kpi_m('2018-09-28',pm)
-    KManager.pull_data('2018-09-28');
-    KManager.count_kpi('2018-09-28');
+    #KManager.pull_data('2018-10-17');
+    KManager.count_kpi('2018-10-17',s=True,m=True);
+    #KManager.kpi_m('2018-10-08',PandasToMysql())

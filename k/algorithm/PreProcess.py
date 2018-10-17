@@ -4,6 +4,7 @@ import  numpy as np;
 from k.util.DateUtil import DateUtil;
 import  pandas as pd;
 import  traceback;
+import  datetime
 
 class PreProcess:
 
@@ -21,14 +22,15 @@ class PreProcess:
     def __process(self,df,start_date):
         df.sort_values(by=[Config.db_date], inplace=True)  # 按列进行排序
         df.index = np.arange(0, df.shape[0], 1)  # 保证索引排序
+        df[Config.db_date] = df[Config.db_date].astype(np.str) #日期更改
 
         start = None;
         if (start_date <=str(df.loc[0, Config.db_date])):
             start= 0;
         elif(start_date >= str( df.loc[df.shape[0]-1,Config.db_date])):
-            start=df.shape[0];
+            start=df.shape[0]-1;
         else:
-            while(start==None):
+            while(start==None and start_date<=df.loc[df.shape[0]-1,Config.db_date]):
                 print('while',start,start_date)
                 start_v = df[df[Config.db_date] == start_date].index.values;
                 if (len(start_v) > 0):

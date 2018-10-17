@@ -74,6 +74,7 @@ class HkHoldPuller(TBasePuller):
         # 任意相关url
         init_url = 'http://dcfm.eastmoney.com//em_mutisvcexpandinterface/api/js/get';
         ctx = self.session.get(url=init_url,params=params_dict, headers=header_dict);
+        print(ctx.url)
         # print 'ctx:'+ctx.content;
         # print(ctx.headers)
         # print(ctx.cookies)
@@ -114,5 +115,5 @@ class HkHoldPuller(TBasePuller):
 
 if(__name__=='__main__'):
     hp=HkHoldPuller();
-    df=hp.pull('2018-09-28',to_mysql=True)
+    df=hp.pull('2018-10-17',to_mysql=False)
     print(df)

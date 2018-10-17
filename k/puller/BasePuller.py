@@ -22,17 +22,7 @@ class BasePuller:
            return df;
 
         except Exception as e:
-            print("puller run error. code:", code, );
-            print(e.__traceback__)
-            msg = traceback.format_exc()  # 方式1
-            print(msg)
-            __err_df=pd.DataFrame();
-            __err_df.loc[0, 'class'] = self.__class__.__name__;
-            __err_df.loc[0, 'code'] = code;
-            __err_df.loc[0, 'date'] = datetime.date.today();
-            __err_df.loc[0, 'err'] = e.__traceback__.__class__
-            __err_df.to_csv('../log/puller-error.log', mode='a');
-            return None;
+            Logger.exception(self.__class__.__name__, code, str(start))
 
     def _run(self,code,start,end):
         return;

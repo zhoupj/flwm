@@ -57,12 +57,13 @@ class FactorUtil:
         return macd_df
 
     @staticmethod
-    def ema(df,N,close='close'):
+    #expma
+    def expma(df,close='close'):
         for i in range(df.shape[0]):
             if i==0:
-                df.loc[i,str(N)+'ema']=df.loc[i,close]
+                df.loc[i,'expma']=df.loc[i,close]
             if i>0:
-                df.loc[i,str(N)+'ema']=(2*df.loc[i,close]+(N-1)*df.loc[i-1,str(N)+'ema'])/(N+1)
+                df.loc[i,'expma']=(2*df.loc[i,close]+(i)*df.loc[i-1,'expma'])/(i+2)
         return df;
 
     #计算均线
@@ -89,7 +90,7 @@ if __name__ == '__main__':
     #plt.figure()
     #macd.plot()
     #plt.show()
-    exma=FactorUtil.ema(df,8,'close')
+    exma=FactorUtil.expma(df,'close')
     print(exma)
 
 

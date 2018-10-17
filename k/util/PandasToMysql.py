@@ -207,6 +207,14 @@ class PandasToMysql:
             df.set_index(index_col,inplace=True)
         return df;
 
+    # 'a>0 and b>0'
+    def query_any(self, sql, index_col=None):
+        Logger.log('select sql:' + sql)
+        df = pd.read_sql_query(sql, self.__engine);
+        if (index_col != None):
+            df.set_index(index_col, inplace=True)
+        return df;
+
     def close(self):
 
         if(self==PandasToMysql.__instance):
@@ -260,3 +268,11 @@ if (__name__ == '__main__'):
      pm = PandasToMysql.instance();
      pm.close();
      pm.close();
+
+
+     df=pm.query_any('select * from share_data_day where code=\'000860\' order by trade_date desc limit 20');
+     print(df);
+     df[Config.db_date] = df[Config.db_date].astype(np.str)
+     print(df.dtypes)
+     print(df[df[Config.db_date]=='2018-10-15'].index.values[0]);
+     print(df.loc[1:,])

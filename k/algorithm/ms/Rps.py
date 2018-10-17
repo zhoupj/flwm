@@ -18,8 +18,8 @@ class Rps(MultiBase):
 #main
 if (__name__ == '__main__'):
 
-    nd=np.random.randint(1,200,size=(500,4));
-    df=pd.DataFrame(nd,columns=['code',Config.incOfOneYear,Config.incOfHalfYear,Config.incOf50d])
+    nd=np.random.randint(1,200,size=(500,5));
+    df=pd.DataFrame(nd,columns=['id','code',Config.incOfOneYear,Config.incOfHalfYear,Config.incOf50d])
     df2=df.copy()
     inR=Rps();
     inR.run(df)

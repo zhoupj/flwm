@@ -17,16 +17,7 @@ class FinBasePuller:
                 self._save_to_csv(df)
           return df;
         except Exception as e:
-            print('pull fin  error. year:',year,'season',season);
-            print(e.__traceback__)
-            msg = traceback.format_exc()  # 方式1
-            print(msg)
-            __err_df = pd.DataFrame();
-            __err_df.loc[0, 'class'] = __class__.__name__;
-            __err_df.loc[0, 'dt'] = dt;
-            __err_df.loc[0, 'date'] = datetime.date.today();
-            __err_df.loc[0, 'err'] = e.__traceback__.__class__
-            __err_df.to_csv('../log/puller-t-error.log', mode='a');
+            Logger.exception(self.__class__.__name__, '', str(year)+str(season))
             return None;
 
     def _save_to_mysql(self, pm,df):

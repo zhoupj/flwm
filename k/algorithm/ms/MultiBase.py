@@ -14,6 +14,9 @@ class MultiBase:
     def run(self, df,to_mysql=False):
         try:
             Logger.log('start to run,factor:', self.__class__.__name__);
+            if (df.empty or df.shape[0] == 0):
+                Logger.log('empty df to run,factor:', self.__class__.__name__);
+                return;
             df= self._process(df);
             if(to_mysql):
                 pm=PandasToMysql();
@@ -21,15 +24,9 @@ class MultiBase:
                 pm.close()
             Logger.log('end to run,factor:');
         except Exception  as e:
-            print("run error. code:", self.__class__.__name__ );
-            print(e.__traceback__)
-            msg = traceback.format_exc()  # 方式1
-            print(msg)
-            __err_df=pd.DataFrame();
-            __err_df.loc[0, 'class'] = self.__class__.__name__;
-            __err_df.loc[0, 'date'] = datetime.date.today();
-            __err_df.loc[0, 'err'] = e.__traceback__.__class__
-            __err_df.to_csv('../log/algorithm-multi-error.log', mode='a');
+            dt=df.loc[0,Config.db_date];
+            Logger.exception(self.__class__.__name__, '', str(dt))
+
 
     def _process(self, df):
         return;
