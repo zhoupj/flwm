@@ -3,5 +3,5 @@ k/data_fin/*
 k/log/*
 .idea/*
 k/.idea/*
-*/__pycache__*/*
+*/__pycache__/*
 *.pyc

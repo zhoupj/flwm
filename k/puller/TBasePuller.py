@@ -10,6 +10,10 @@ class TBasePuller:
         try:
           Logger.log('pull tbase data,dt',dt)
           df=  self._run(dt);
+          if(df.empty):
+              Logger.log('df is empty');
+              return df;
+
           if (to_mysql):
                 pm = PandasToMysql();
                 self._save_to_mysql(pm,df);
