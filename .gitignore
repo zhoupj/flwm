@@ -4,3 +4,4 @@ k/log/*
 .idea/*
 k/.idea/*
 */__pycache__*/*
+*.pyc
