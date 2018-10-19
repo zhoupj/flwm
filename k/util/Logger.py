@@ -63,10 +63,6 @@ class Logger:
        #exp = traceback.format_exc()  # 方式1
 
    @staticmethod
-   def exception():
-       logger.exception(sys.exc_info())
-
-   @staticmethod
    def error(info):
        logger.error(info)
 

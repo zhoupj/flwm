@@ -115,5 +115,5 @@ class HkHoldPuller(TBasePuller):
 
 if(__name__=='__main__'):
     hp=HkHoldPuller();
-    df=hp.pull('2018-10-17',to_mysql=True)
+    df=hp.pull('2018-10-18',to_mysql=True)
     print(df)

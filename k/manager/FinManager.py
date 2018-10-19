@@ -26,12 +26,14 @@ class FinManager:
             code = row['code'];
             start = str(row['timeToMarket']);
             #目前start和and 还未生效
-            fy = FinYearPuller();
+            '''fy = FinYearPuller();
             fy.pull(code, start, end);
             fs = FinSeasonPuller();
-            fs.pull(code, start, end);
-            fdp = FundsPuller();
-            fdp.pull(code, start, end)
+            fs.pull(code, start, end);'''
+
+            if(code>='002848'):
+                fdp = FundsPuller();
+                fdp.pull(code, start, end)
 
     @staticmethod
     def count_kip():
@@ -45,6 +47,3 @@ if(__name__=='__main__'):
 
 
 
-#main
-if (__name__ == '__main__'):
-    main();

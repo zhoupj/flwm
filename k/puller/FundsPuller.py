@@ -60,5 +60,5 @@ class FundsPuller(BasePuller):
 
 if(__name__=='__main__'):
     fp=FundsPuller()
-    df =fp.pull('000860',start='2018-06-30',end='2018-06-30',to_mysql=True)
+    df =fp.pull('000691',start='2018-06-30',end='2018-06-30',to_mysql=True)
     print(df)
