@@ -43,6 +43,7 @@ class DbCreator:
             incOf250 double(12,3) comment '一年的涨幅',
             incOf120 double(12,3), 
             incOf50 double(12,3),
+            incOf2d double(12,3),
             rps120 double(5,2) comment '于同类股比较的涨幅排名',
             rps250 double(5,2),
             rps50 double(5,2),

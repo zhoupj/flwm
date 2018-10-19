@@ -23,7 +23,8 @@ class Config:
 
     incOfOneYear='incOf250';#一年涨幅，单位%,今日收盘价和250个交易日前的收盘前比较（停牌的不算）
     incOfHalfYear='incOf120';#半年涨幅，单位%，。。。。。120.。。。。。。。。。。。
-    incOf50d='incOf50'
+    incOf50d='incOf50';
+    incOf2d = 'incOf2d';# 相对昨日的增幅
     rps120='rps120';# 一年的排名，100－》1
     rps250='rps250';# 半年的排名，100－》1
     rps50='rps50';

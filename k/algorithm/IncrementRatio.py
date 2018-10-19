@@ -20,6 +20,7 @@ class IncrementRatio(Base):
            df.loc[i, Config.incOf50d] = self.__add_increment__(i, INC_50, df);
            df.loc[i, Config.incOfHalfYear] = self.__add_increment__(i, INC_120, df);
            df.loc[i, Config.incOfOneYear] = self.__add_increment__(i, INC_250, df);
+           df.loc[i,Config.incOf2d]=self.__add_increment__(i,2,df);
 
         return df[[Config.id,Config.incOfOneYear,Config.incOfHalfYear,Config.incOf50d]]
 
