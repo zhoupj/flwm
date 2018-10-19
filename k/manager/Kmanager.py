@@ -98,7 +98,7 @@ class KManager:
     @staticmethod
     def kpi_s(code,start_date,pm,dict):
 
-        df = pm.query(DbCreator.share_data_day, where='code=\'' + code + '\' and trade_date>=\'2016-01-01\'');
+        df = pm.query(DbCreator.share_data_day, where='code=\'' + code + '\' and trade_date>=\'2011-01-01\'');
 
         Logger.log('start to kpi:', code,' size:',df.shape[0])
         #流水线

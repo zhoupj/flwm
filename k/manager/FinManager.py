@@ -36,7 +36,7 @@ class FinManager:
                 fdp.pull(code, start, end)
 
     @staticmethod
-    def count_kip():
+    def count_kpi():
         return;
 
 if(__name__=='__main__'):
