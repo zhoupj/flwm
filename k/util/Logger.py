@@ -5,11 +5,14 @@ import traceback;
 import logging
 import logging.handlers
 import sys;
+from GlobalConfig import  ConfigDict;
+
+PATH=ConfigDict['k_log_path']
 
 # 创建一个logger
 digest_log=logging.getLogger('digest');
 digest_log.setLevel(logging.INFO)
-d_handler = logging.FileHandler('../log/digest.log')
+d_handler = logging.FileHandler(PATH+'digest.log')
 d_handler.setLevel(logging.INFO)
 d_handler.setFormatter(logging.Formatter("%(asctime)s|%(message)s"))
 digest_log.addHandler(d_handler)
@@ -18,10 +21,10 @@ digest_log.addHandler(d_handler)
 logger = logging.getLogger('mylogger')
 logger.setLevel(logging.DEBUG)
 
-rf_handler = logging.handlers.TimedRotatingFileHandler('../log/run.log', when='midnight', interval=1, backupCount=7, atTime=datetime.time(0, 0, 0, 0))
+rf_handler = logging.handlers.TimedRotatingFileHandler(PATH+'run.log', when='midnight', interval=1, backupCount=7, atTime=datetime.time(0, 0, 0, 0))
 rf_handler.setFormatter(logging.Formatter("%(asctime)s|%(message)s"))
 
-f_handler = logging.FileHandler('../log/error.log')
+f_handler = logging.FileHandler(PATH+'error.log')
 f_handler.setLevel(logging.ERROR)
 f_handler.setFormatter(logging.Formatter("%(asctime)s|%(message)s"))
 
@@ -73,5 +76,4 @@ if(__name__=='__main__'):
     try:
         raise Exception;
     except Exception as e:
-        Logger.exception()
-    Logger.log('a',122,'b','dddd')
+        Logger.log('a',122,'b','dddd')

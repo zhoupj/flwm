@@ -4,6 +4,7 @@ from app.common.util.LogUtil import logger,digest_log;
 import  pymysql;
 from sqlalchemy import create_engine;
 import  pandas as pd;
+from GlobalConfig import ConfigDict;
  
 
 class DBPool:
@@ -11,7 +12,7 @@ class DBPool:
 
     @staticmethod
     # 目前未有锁，会有问题
-    def instance(host='127.0.0.1', user='root', password='123456', db_name='fin_data'):
+    def instance():
        #https://www.cnblogs.com/huchong/p/8244279.html
         if (DBPool.__instance != None):
             return DBPool.__instance
@@ -20,7 +21,7 @@ class DBPool:
         DBPool.__instance = pm;
         return pm;
 
-    def __init__(self, host='127.0.0.1', user='root', password='123456', db_name='fin_data'):
+    def __init__(self, host=ConfigDict['ip'],user=ConfigDict['user'],password=ConfigDict['password'],db_name=ConfigDict['db_name']):
 
         try:
             logger.info('start to connect db...');

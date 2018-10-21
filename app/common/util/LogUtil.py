@@ -5,8 +5,8 @@ import traceback;
 import logging
 import logging.handlers
 import sys;
-
-PATH_DIR='/Users/zhoupj/Documents/svncode/flwm/app/log/';
+from GlobalConfig import ConfigDict;
+PATH_DIR=ConfigDict['app_log_path']
 
 # digest个logger
 digest_log=logging.getLogger('digest');

@@ -1,0 +1,11 @@
+
+#db
+ip=127.0.0.1
+db_name=fin_data
+user=root
+password=123456
+
+#log
+root_path=/Users/zhoupj/Documents/svncode/flwm/
+k_log_path=/Users/zhoupj/Documents/svncode/flwm/app/log/
+app_log_path=/Users/zhoupj/Documents/svncode/flwm/k/log/

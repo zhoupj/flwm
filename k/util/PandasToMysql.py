@@ -4,6 +4,7 @@ import numpy as np
 from sqlalchemy import create_engine;
 from k.util.Logger import  Logger;
 from k.Config import Config;
+from GlobalConfig import ConfigDict;
 '''
 need to make sure that the field name in mysql is same with the column name in dataFrame.
 '''
@@ -14,7 +15,7 @@ class PandasToMysql:
 
     @staticmethod
     #目前未有锁，会有问题
-    def instance(host='127.0.0.1',user='root',password='123456',db_name='fin_data'):
+    def instance():
         if(PandasToMysql.__instance!=None):
             PandasToMysql.__use_num += 1;
             return PandasToMysql.__instance
@@ -24,7 +25,7 @@ class PandasToMysql:
         return pm;
 
 
-    def __init__(self,host='127.0.0.1',user='root',password='123456',db_name='fin_data'):
+    def __init__(self,host=ConfigDict['ip'],user=ConfigDict['user'],password=ConfigDict['password'],db_name=ConfigDict['db_name']):
 
         try:
             Logger.log('start to connect db...');
