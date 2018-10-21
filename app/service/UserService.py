@@ -63,7 +63,7 @@ class UserService:
         id = df.loc[0, 'id']
         deadline = df.loc[0, 'member_deadline'];
         today = datetime.datetime.now().strftime('%Y-%m-%d');
-        if (today > deadline):
+        if (deadline!=None and today > deadline):
             df.loc[0, 'member_deadline'] = None;
             df.loc[0, 'is_member'] = 0;
             dbPool.execute(

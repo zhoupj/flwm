@@ -32,7 +32,7 @@ class Login(RequestHandler):
             self.write(Result.succ(df.to_json(orient='records')))
         except Exception as e:
             logger.exception('fail');
-            self.write(Result.fail(Result.ERROR_SYS))
+            self.write(Result.fail2(Result.ERROR_SYS))
 
 class Quit(RequestHandler):
     def post(self, *args, **kwargs):
