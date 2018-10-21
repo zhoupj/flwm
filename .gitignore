@@ -1,8 +1,7 @@
 k/data/*
 k/data_fin/*
-k/log/*
 .idea/*
 k/.idea/*
 */__pycache__/*
 *.pyc
-*.log
+*.log*

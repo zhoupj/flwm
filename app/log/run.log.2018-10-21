@@ -1,0 +1,612 @@
+2018-10-21 17:13:27,368|abc
+2018-10-21 17:13:27,368|error
+Traceback (most recent call last):
+  File "/Users/zhoupj/Documents/svncode/flwm/app/common/util/LogUtil.py", line 39, in <module>
+    raise Exception;
+Exception
+2018-10-21 17:13:47,827|start to connect db...
+2018-10-21 17:13:47,863|connect OK
+2018-10-21 17:14:16,638|start to connect db...
+2018-10-21 17:14:16,697|connect OK
+2018-10-21 17:14:16,697|select sql:select * from share_data_basic limit 10
+2018-10-21 17:24:49,207|start to connect db...
+2018-10-21 17:24:49,240|connect OK
+2018-10-21 17:25:27,232|start to connect db...
+2018-10-21 17:25:27,261|connect OK
+2018-10-21 18:10:47,780|start to connect db...
+2018-10-21 18:10:47,807|connect OK
+2018-10-21 18:11:13,735|start to connect db...
+2018-10-21 18:11:13,777|connect OK
+2018-10-21 18:11:13,808|save  to mysql error:
+Traceback (most recent call last):
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pandas/core/indexing.py", line 1790, in _validate_key
+    error()
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pandas/core/indexing.py", line 1785, in error
+    axis=self.obj._get_axis_name(axis)))
+KeyError: 'the label [code] is not in the [index]'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/zhoupj/Documents/svncode/flwm/app/common/util/DBPool.py", line 43, in save
+    exist.append(self.__query_exist(table_name, df, i, primaryKeys))
+  File "/Users/zhoupj/Documents/svncode/flwm/app/common/util/DBPool.py", line 63, in __query_exist
+    chip += self.__parse_field__(val) + '=' + self.__parse_value__(df.loc[i, val]);
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pandas/core/indexing.py", line 1472, in __getitem__
+    return self._getitem_tuple(key)
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pandas/core/indexing.py", line 870, in _getitem_tuple
+    return self._getitem_lowerdim(tup)
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pandas/core/indexing.py", line 1027, in _getitem_lowerdim
+    return getattr(section, self.name)[new_key]
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pandas/core/indexing.py", line 1478, in __getitem__
+    return self._getitem_axis(maybe_callable, axis=axis)
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pandas/core/indexing.py", line 1911, in _getitem_axis
+    self._validate_key(key, axis)
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pandas/core/indexing.py", line 1798, in _validate_key
+    error()
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pandas/core/indexing.py", line 1785, in error
+    axis=self.obj._get_axis_name(axis)))
+KeyError: 'the label [code] is not in the [index]'
+2018-10-21 18:12:22,314|start to connect db...
+2018-10-21 18:12:22,341|connect OK
+2018-10-21 18:12:22,393|insert sql record count:4
+2018-10-21 18:12:22,393|save  to mysql error:
+Traceback (most recent call last):
+  File "/Users/zhoupj/Documents/svncode/flwm/app/common/util/DBPool.py", line 52, in save
+    self.insert(table_name, insert_df);
+  File "/Users/zhoupj/Documents/svncode/flwm/app/common/util/DBPool.py", line 88, in insert
+    self.__cursor.execute(sql);
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/cursors.py", line 170, in execute
+    result = self._query(query)
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/cursors.py", line 328, in _query
+    conn.query(q)
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/connections.py", line 516, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/connections.py", line 727, in _read_query_result
+    result.read()
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/connections.py", line 1066, in read
+    first_packet = self.connection._read_packet()
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/connections.py", line 683, in _read_packet
+    packet.check_error()
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/protocol.py", line 220, in check_error
+    err.raise_mysql_exception(self._data)
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/err.py", line 109, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.InternalError: (1054, "Unknown column 'act_act_state' in 'field list'")
+2018-10-21 18:12:33,612|start to connect db...
+2018-10-21 18:12:33,644|connect OK
+2018-10-21 18:12:33,715|insert sql record count:4
+2018-10-21 18:12:33,720|no date to update
+2018-10-21 18:14:45,418|start to connect db...
+2018-10-21 18:14:45,447|connect OK
+2018-10-21 18:14:45,502|update sql count:4
+2018-10-21 18:16:20,651|start to connect db...
+2018-10-21 18:16:20,681|connect OK
+2018-10-21 18:16:20,704|select *select * from share_activity where act_name='周VIP'
+2018-10-21 18:16:20,719|select *select * from share_activity where act_name='月度VIP'
+2018-10-21 18:16:20,722|select *select * from share_activity where act_name='季度VIP'
+2018-10-21 18:16:20,724|select *select * from share_activity where act_name='年度VIP'
+2018-10-21 18:16:20,733|update sql count:4
+2018-10-21 18:17:23,752|start to connect db...
+2018-10-21 18:17:23,782|connect OK
+2018-10-21 18:17:23,804|select *select * from share_activity where act_name='周VIP'
+2018-10-21 18:17:23,814|select *select * from share_activity where act_name='月度VIP'
+2018-10-21 18:17:23,816|select *select * from share_activity where act_name='季度VIP'
+2018-10-21 18:17:23,819|select *select * from share_activity where act_name='年度VIP'
+2018-10-21 18:17:23,821|save  to mysql error:
+Traceback (most recent call last):
+  File "/Users/zhoupj/Documents/svncode/flwm/app/common/util/DBPool.py", line 50, in save
+    insert_df.shape[0],  update_df.shape[0]));
+TypeError: %d format: a number is required, not str
+2018-10-21 18:19:11,401|start to connect db...
+2018-10-21 18:19:11,431|connect OK
+2018-10-21 18:19:11,450|select *select * from share_activity where act_name='周VIP'
+2018-10-21 18:19:11,460|select *select * from share_activity where act_name='月度VIP'
+2018-10-21 18:19:11,462|select *select * from share_activity where act_name='季度VIP'
+2018-10-21 18:19:11,464|select *select * from share_activity where act_name='年度VIP'
+2018-10-21 18:19:11,468|save  to mysql error:
+Traceback (most recent call last):
+  File "/Users/zhoupj/Documents/svncode/flwm/app/common/util/DBPool.py", line 50, in save
+    insert_df.shape[0], update_df.shape[0]));
+TypeError: %d format: a number is required, not str
+2018-10-21 18:20:13,406|start to connect db...
+2018-10-21 18:20:13,433|connect OK
+2018-10-21 18:20:13,454|select *select * from share_activity where act_name='周VIP'
+2018-10-21 18:20:13,464|select *select * from share_activity where act_name='月度VIP'
+2018-10-21 18:20:13,467|select *select * from share_activity where act_name='季度VIP'
+2018-10-21 18:20:13,469|select *select * from share_activity where act_name='年度VIP'
+2018-10-21 18:20:13,474|save  to mysql error:
+Traceback (most recent call last):
+  File "/Users/zhoupj/Documents/svncode/flwm/app/common/util/DBPool.py", line 50, in save
+    0 if insert_df.empty else insert_df.shape[0], 0 if update_df.empty else update_df.shape[0]));
+TypeError: %d format: a number is required, not str
+2018-10-21 18:20:50,585|start to connect db...
+2018-10-21 18:20:50,615|connect OK
+2018-10-21 18:20:50,637|select *select * from share_activity where act_name='周VIP'
+2018-10-21 18:20:50,648|select *select * from share_activity where act_name='月度VIP'
+2018-10-21 18:20:50,650|select *select * from share_activity where act_name='季度VIP'
+2018-10-21 18:20:50,653|select *select * from share_activity where act_name='年度VIP'
+2018-10-21 18:20:50,656|save sql record count: 4,insert_count:0,update_count:4
+2018-10-21 18:20:50,658|update sql count:4
+2018-10-21 18:21:37,332|start to connect db...
+2018-10-21 18:21:37,355|connect OK
+2018-10-21 18:21:37,376|select *select * from share_activity where act_name='周VIP'
+2018-10-21 18:21:37,392|select *select * from share_activity where act_name='月度VIP'
+2018-10-21 18:21:37,395|select *select * from share_activity where act_name='季度VIP'
+2018-10-21 18:21:37,398|select *select * from share_activity where act_name='年度VIP'
+2018-10-21 18:21:37,402|save sql record count: 4,insert_count:0,update_count:4
+2018-10-21 18:21:37,406|update sql count:4
+2018-10-21 19:42:07,957|start to connect db...
+2018-10-21 19:42:07,984|connect OK
+2018-10-21 19:42:08,028|select *select * from share_activity where act_name='周VIP'
+2018-10-21 19:42:08,047|select *select * from share_activity where act_name='月度VIP'
+2018-10-21 19:42:08,051|select *select * from share_activity where act_name='季度VIP'
+2018-10-21 19:42:08,053|select *select * from share_activity where act_name='年度VIP'
+2018-10-21 19:42:08,058|save sql record count: 4,insert_count:4,update_count:0
+2018-10-21 19:42:08,059|insert sql record count:4
+2018-10-21 19:42:08,064|no date to update
+2018-10-21 19:42:35,828|start to connect db...
+2018-10-21 19:42:35,858|connect OK
+2018-10-21 19:42:35,884|select *select * from share_activity where act_name='周VIP'
+2018-10-21 19:42:35,894|select *select * from share_activity where act_name='月度VIP'
+2018-10-21 19:42:35,897|select *select * from share_activity where act_name='季度VIP'
+2018-10-21 19:42:35,899|select *select * from share_activity where act_name='年度VIP'
+2018-10-21 19:42:35,903|save sql record count: 4,insert_count:0,update_count:4
+2018-10-21 19:42:35,905|update sql count:4
+2018-10-21 20:01:35,406|start to connect db...
+2018-10-21 20:01:35,435|connect OK
+2018-10-21 20:01:35,438|select sql:select * from share_activity
+2018-10-21 20:01:35,479|select sql:select * from share_user where open_id="open_id_test"
+2018-10-21 20:01:35,493|insert sql record count:1
+2018-10-21 20:01:35,498|select sql:select * from share_user where open_id="open_id_test"
+2018-10-21 20:04:06,632|start to connect db...
+2018-10-21 20:04:06,659|connect OK
+2018-10-21 20:04:06,660|select sql:select * from share_activity
+2018-10-21 20:04:06,701|select sql:select * from share_user where open_id="open_id_test"
+2018-10-21 20:04:06,705|select sql:select * from share_user where open_id="open_id_test"
+2018-10-21 20:06:04,147|start to connect db...
+2018-10-21 20:06:04,180|connect OK
+2018-10-21 20:06:04,182|select sql:select * from share_activity
+2018-10-21 20:06:04,214|select sql:select * from share_user where open_id="open_id_test"
+2018-10-21 20:06:04,218|select sql:select * from share_user where open_id="open_id_test"
+2018-10-21 20:06:04,237|select sql:select id,last_login_time from share_user where id="1"
+2018-10-21 20:06:04,242|update sql count:1
+2018-10-21 20:06:04,244|select sql:select id,login_days from share_user where id="1"
+2018-10-21 20:06:04,362|update sql count:1
+2018-10-21 20:06:04,362|select sql:select * from share_activity where act_id="1"
+2018-10-21 20:06:49,459|start to connect db...
+2018-10-21 20:06:49,501|connect OK
+2018-10-21 20:06:49,504|select sql:select * from share_activity
+2018-10-21 20:06:49,546|select sql:select * from share_user where open_id="open_id_test"
+2018-10-21 20:06:49,551|select sql:select * from share_user where open_id="open_id_test"
+2018-10-21 20:06:49,587|select sql:select id,last_login_time from share_user where id="1"
+2018-10-21 20:06:49,592|update sql count:1
+2018-10-21 20:06:49,594|select sql:select id,login_days from share_user where id="1"
+2018-10-21 20:06:49,672|update sql count:1
+2018-10-21 20:06:49,676|select sql:select * from share_activity where act_id=1
+2018-10-21 20:07:15,591|start to connect db...
+2018-10-21 20:07:15,621|connect OK
+2018-10-21 20:07:15,624|select sql:select * from share_activity
+2018-10-21 20:07:15,655|select sql:select * from share_user where open_id="open_id_test"
+2018-10-21 20:07:15,658|select sql:select * from share_user where open_id="open_id_test"
+2018-10-21 20:07:15,679|select sql:select id,last_login_time from share_user where id="1"
+2018-10-21 20:07:15,683|update sql count:1
+2018-10-21 20:07:15,684|select sql:select id,login_days from share_user where id="1"
+2018-10-21 20:07:15,797|update sql count:1
+2018-10-21 20:07:15,798|select sql:select * from share_activity where id=1
+2018-10-21 20:08:21,068|start to connect db...
+2018-10-21 20:08:21,105|connect OK
+2018-10-21 20:08:21,106|select sql:select * from share_activity
+2018-10-21 20:08:21,140|select sql:select * from share_user where open_id="open_id_test"
+2018-10-21 20:08:21,147|select sql:select * from share_user where open_id="open_id_test"
+2018-10-21 20:08:21,170|select sql:select id,last_login_time from share_user where id="1"
+2018-10-21 20:08:21,174|update sql count:1
+2018-10-21 20:08:21,177|select sql:select id,login_days from share_user where id="1"
+2018-10-21 20:08:21,256|update sql count:1
+2018-10-21 20:08:21,258|select sql:select * from share_activity where id=1
+2018-10-21 20:10:28,342|start to connect db...
+2018-10-21 20:10:28,372|connect OK
+2018-10-21 20:10:28,373|select sql:select * from share_activity
+2018-10-21 20:10:28,412|select sql:select * from share_user where open_id="open_id_test"
+2018-10-21 20:10:28,416|select sql:select * from share_user where open_id="open_id_test"
+2018-10-21 20:10:28,433|select sql:select id,last_login_time from share_user where id="1"
+2018-10-21 20:10:28,436|update sql count:1
+2018-10-21 20:10:28,437|select sql:select id,login_days from share_user where id="1"
+2018-10-21 20:10:28,544|update sql count:1
+2018-10-21 20:10:28,545|select sql:select * from share_activity where id=1
+2018-10-21 20:10:28,548|execute sqls :update share_user set is_member=1,member_deadline="2018-10-28" where id=1 #insert into share_buy_record (user_id,buy_date,act_id,is_sucess) vlaues (1,"2018-10-21 20:10:28",1,1)
+2018-10-21 20:10:28,552|execte sql error:
+Traceback (most recent call last):
+  File "/Users/zhoupj/Documents/svncode/flwm/app/common/util/DBPool.py", line 184, in execute
+    self.__cursor.execute(sql);
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/cursors.py", line 170, in execute
+    result = self._query(query)
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/cursors.py", line 328, in _query
+    conn.query(q)
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/connections.py", line 516, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/connections.py", line 727, in _read_query_result
+    result.read()
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/connections.py", line 1066, in read
+    first_packet = self.connection._read_packet()
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/connections.py", line 683, in _read_packet
+    packet.check_error()
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/protocol.py", line 220, in check_error
+    err.raise_mysql_exception(self._data)
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/err.py", line 109, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.ProgrammingError: (1064, 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'vlaues (1,"2018-10-21 20:10:28",1,1)\' at line 1')
+2018-10-21 20:12:17,242|start to connect db...
+2018-10-21 20:12:17,263|connect OK
+2018-10-21 20:12:17,264|select sql:select * from share_activity
+2018-10-21 20:12:17,321|select sql:select * from share_user where open_id="open_id_test"
+2018-10-21 20:12:17,326|select sql:select * from share_user where open_id="open_id_test"
+2018-10-21 20:12:17,353|select sql:select id,last_login_time from share_user where id="1"
+2018-10-21 20:12:17,358|update sql count:1
+2018-10-21 20:12:17,359|select sql:select id,login_days from share_user where id="1"
+2018-10-21 20:12:17,516|update sql count:1
+2018-10-21 20:12:17,517|select sql:select * from share_activity where id=1
+2018-10-21 20:12:17,522|execute sqls :update share_user set is_member=1,member_deadline="2018-10-28" where id=1 #insert into share_buy_record (user_id,buy_date,act_id,is_sucess) vlaues (1,"2018-10-21 20:12:17",1,1)
+2018-10-21 20:12:17,524|execte sql error:
+Traceback (most recent call last):
+  File "/Users/zhoupj/Documents/svncode/flwm/app/common/util/DBPool.py", line 184, in execute
+    self.__cursor.execute(sql);
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/cursors.py", line 170, in execute
+    result = self._query(query)
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/cursors.py", line 328, in _query
+    conn.query(q)
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/connections.py", line 516, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/connections.py", line 727, in _read_query_result
+    result.read()
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/connections.py", line 1066, in read
+    first_packet = self.connection._read_packet()
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/connections.py", line 683, in _read_packet
+    packet.check_error()
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/protocol.py", line 220, in check_error
+    err.raise_mysql_exception(self._data)
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/err.py", line 109, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.ProgrammingError: (1064, 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'vlaues (1,"2018-10-21 20:12:17",1,1)\' at line 1')
+2018-10-21 20:15:58,950|start to connect db...
+2018-10-21 20:15:58,977|connect OK
+2018-10-21 20:15:58,978|select sql:select * from share_activity
+2018-10-21 20:15:59,014|select sql:select * from share_user where open_id="open_id_test"
+2018-10-21 20:15:59,019|select sql:select * from share_user where open_id="open_id_test"
+2018-10-21 20:15:59,036|select sql:select id,last_login_time from share_user where id="1"
+2018-10-21 20:15:59,040|update sql count:1
+2018-10-21 20:15:59,041|select sql:select id,login_days from share_user where id="1"
+2018-10-21 20:15:59,143|update sql count:1
+2018-10-21 20:15:59,144|select sql:select * from share_activity where id=1
+2018-10-21 20:15:59,148|execute sqls :update share_user set is_member=1,member_deadline="2018-10-28" where id=1 #insert into share_buy_record (user_id,buy_date,act_id,is_sucess) values (1,"2018-10-21 20:15:59",1,1)
+2018-10-21 20:15:59,151|select sql:select * from share_user where open_id="open_id_test"
+2018-10-21 20:16:38,965|start to connect db...
+2018-10-21 20:16:38,998|connect OK
+2018-10-21 20:16:38,999|select sql:select * from share_activity
+2018-10-21 20:16:39,034|select sql:select * from share_user where open_id="open_id_test"
+2018-10-21 20:16:39,038|select sql:select * from share_user where open_id="open_id_test"
+2018-10-21 20:16:39,048|select sql:select id,last_login_time from share_user where id="1"
+2018-10-21 20:16:39,054|update sql count:1
+2018-10-21 20:16:39,054|select sql:select id,login_days from share_user where id="1"
+2018-10-21 20:16:39,157|update sql count:1
+2018-10-21 20:16:39,157|select sql:select * from share_activity where id=1
+2018-10-21 20:16:39,161|execute sqls :update share_user set is_member=1,member_deadline="2018-10-28" where id=1 #insert into share_buy_record (user_id,buy_date,act_id,is_sucess) values (1,"2018-10-21 20:16:39",1,1)
+2018-10-21 20:16:39,163|select sql:select * from share_user where open_id="open_id_test"
+2018-10-21 20:54:07,786|start to connect db...
+2018-10-21 20:54:07,818|connect OK
+2018-10-21 20:54:26,237|start to connect db...
+2018-10-21 20:54:26,259|connect OK
+2018-10-21 20:57:47,736|start to connect db...
+2018-10-21 20:57:47,762|connect OK
+2018-10-21 21:03:11,787|start to connect db...
+2018-10-21 21:03:11,877|connect OK
+2018-10-21 21:04:17,458|start to connect db...
+2018-10-21 21:04:17,487|connect OK
+2018-10-21 21:04:58,738|start to connect db...
+2018-10-21 21:04:58,763|connect OK
+2018-10-21 21:05:46,327|start to connect db...
+2018-10-21 21:05:46,350|connect OK
+2018-10-21 21:06:08,310|start to connect db...
+2018-10-21 21:06:08,335|connect OK
+2018-10-21 21:06:45,365|select sql:select * from share_user where open_id="'code_t_t'"
+2018-10-21 21:06:45,441|fail
+Traceback (most recent call last):
+  File "/Users/zhoupj/Documents/svncode/flwm/app/handler/UserHandler.py", line 17, in get
+    US.create(open_id,name);
+  File "/Users/zhoupj/Documents/svncode/flwm/app/service/UserService.py", line 45, in create
+    dbPool.insert(UserService.__TBNAME, self.df);
+AttributeError: 'UserService' object has no attribute 'df'
+2018-10-21 21:07:04,715|start to connect db...
+2018-10-21 21:07:04,743|connect OK
+2018-10-21 21:07:52,492|select sql:select * from share_user where open_id="'code_t_t'"
+2018-10-21 21:07:52,543|insert sql record count:1
+2018-10-21 21:07:52,543|fail
+Traceback (most recent call last):
+  File "/Users/zhoupj/Documents/svncode/flwm/app/handler/UserHandler.py", line 17, in get
+    US.create(open_id,name);
+  File "/Users/zhoupj/Documents/svncode/flwm/app/service/UserService.py", line 45, in create
+    dbPool.insert(UserService.__TBNAME, df);
+  File "/Users/zhoupj/Documents/svncode/flwm/app/common/util/DBPool.py", line 88, in insert
+    self.__cursor.execute(sql);
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/cursors.py", line 170, in execute
+    result = self._query(query)
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/cursors.py", line 328, in _query
+    conn.query(q)
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/connections.py", line 516, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/connections.py", line 727, in _read_query_result
+    result.read()
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/connections.py", line 1066, in read
+    first_packet = self.connection._read_packet()
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/connections.py", line 683, in _read_packet
+    packet.check_error()
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/protocol.py", line 220, in check_error
+    err.raise_mysql_exception(self._data)
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/err.py", line 109, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.ProgrammingError: (1064, "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'zhoupj'',''code_t_t'','0.0','2018-10-21 21:07:52','1.0')' at line 1")
+2018-10-21 21:11:27,741|start to connect db...
+2018-10-21 21:11:27,810|connect OK
+2018-10-21 21:12:11,212|select sql:select * from share_user where open_id="'t_t'"
+2018-10-21 21:12:11,236|insert sql record count:1
+2018-10-21 21:12:11,236|fail
+Traceback (most recent call last):
+  File "/Users/zhoupj/Documents/svncode/flwm/app/handler/UserHandler.py", line 18, in get
+    US.create(open_id,name);
+  File "/Users/zhoupj/Documents/svncode/flwm/app/service/UserService.py", line 45, in create
+    dbPool.insert(UserService.__TBNAME, df);
+  File "/Users/zhoupj/Documents/svncode/flwm/app/common/util/DBPool.py", line 88, in insert
+    self.__cursor.execute(sql);
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/cursors.py", line 170, in execute
+    result = self._query(query)
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/cursors.py", line 328, in _query
+    conn.query(q)
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/connections.py", line 516, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/connections.py", line 727, in _read_query_result
+    result.read()
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/connections.py", line 1066, in read
+    first_packet = self.connection._read_packet()
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/connections.py", line 683, in _read_packet
+    packet.check_error()
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/protocol.py", line 220, in check_error
+    err.raise_mysql_exception(self._data)
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/err.py", line 109, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.ProgrammingError: (1064, "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'zhoupj',''t_t'','0.0','2018-10-21 21:12:11','1.0')' at line 1")
+2018-10-21 21:16:38,096|start to connect db...
+2018-10-21 21:16:38,189|connect OK
+2018-10-21 21:16:40,848|start to connect db...
+2018-10-21 21:16:40,975|connect OK
+2018-10-21 21:17:45,347|start to connect db...
+2018-10-21 21:17:45,404|connect OK
+2018-10-21 21:18:15,707|start to connect db...
+2018-10-21 21:18:15,758|connect OK
+2018-10-21 21:19:01,696|select sql:select * from share_user where open_id="'a'"
+2018-10-21 21:19:01,748|insert sql record count:1
+2018-10-21 21:19:01,749|fail
+Traceback (most recent call last):
+  File "/Users/zhoupj/Documents/svncode/flwm/app/handler/UserHandler.py", line 18, in get
+    US.create(open_id,name);
+  File "/Users/zhoupj/Documents/svncode/flwm/app/service/UserService.py", line 45, in create
+    dbPool.insert(UserService.__TBNAME, df);
+  File "/Users/zhoupj/Documents/svncode/flwm/app/common/util/DBPool.py", line 88, in insert
+    self.__cursor.execute(sql);
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/cursors.py", line 170, in execute
+    result = self._query(query)
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/cursors.py", line 328, in _query
+    conn.query(q)
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/connections.py", line 516, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/connections.py", line 727, in _read_query_result
+    result.read()
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/connections.py", line 1066, in read
+    first_packet = self.connection._read_packet()
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/connections.py", line 683, in _read_packet
+    packet.check_error()
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/protocol.py", line 220, in check_error
+    err.raise_mysql_exception(self._data)
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/err.py", line 109, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.ProgrammingError: (1064, "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'zhou'',''a'','0.0','2018-10-21 21:19:01','1.0')' at line 1")
+2018-10-21 21:19:05,553|start to connect db...
+2018-10-21 21:19:05,603|connect OK
+2018-10-21 21:19:17,057|start to connect db...
+2018-10-21 21:19:17,123|connect OK
+2018-10-21 21:21:21,223|select sql:select * from share_user where open_id="'a'"
+2018-10-21 21:21:21,260|insert sql record count:1
+2018-10-21 21:21:21,260|fail
+Traceback (most recent call last):
+  File "/Users/zhoupj/Documents/svncode/flwm/app/handler/UserHandler.py", line 18, in get
+    US.create(open_id,name);
+  File "/Users/zhoupj/Documents/svncode/flwm/app/service/UserService.py", line 45, in create
+    dbPool.insert(UserService.__TBNAME, df);
+  File "/Users/zhoupj/Documents/svncode/flwm/app/common/util/DBPool.py", line 88, in insert
+    self.__cursor.execute(sql);
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/cursors.py", line 170, in execute
+    result = self._query(query)
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/cursors.py", line 328, in _query
+    conn.query(q)
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/connections.py", line 516, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/connections.py", line 727, in _read_query_result
+    result.read()
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/connections.py", line 1066, in read
+    first_packet = self.connection._read_packet()
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/connections.py", line 683, in _read_packet
+    packet.check_error()
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/protocol.py", line 220, in check_error
+    err.raise_mysql_exception(self._data)
+  File "/Users/zhoupj/anaconda3/lib/python3.6/site-packages/pymysql/err.py", line 109, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.ProgrammingError: (1064, "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'zhou'',''a'','0.0','2018-10-21 21:21:21','1.0')' at line 1")
+2018-10-21 21:21:57,213|start to connect db...
+2018-10-21 21:21:57,242|connect OK
+2018-10-21 21:22:21,749|start to connect db...
+2018-10-21 21:22:21,770|connect OK
+2018-10-21 21:22:52,736|select sql:select * from share_user where open_id="zhoupj_t1"
+2018-10-21 21:22:52,774|insert sql record count:1
+2018-10-21 21:22:52,779|select sql:select * from share_user where open_id="zhoupj_t1"
+2018-10-21 21:22:52,799|fail
+Traceback (most recent call last):
+  File "/Users/zhoupj/Documents/svncode/flwm/app/handler/UserHandler.py", line 20, in get
+    self.write(Result.succ(df.to_json(orient='records')))
+  File "/Users/zhoupj/Documents/svncode/flwm/app/common/Result.py", line 23, in succ
+    return json.dump(rst);
+TypeError: dump() missing 1 required positional argument: 'fp'
+2018-10-21 21:24:09,399|start to connect db...
+2018-10-21 21:24:09,425|connect OK
+2018-10-21 21:28:57,088|start to connect db...
+2018-10-21 21:28:57,111|connect OK
+2018-10-21 21:29:46,009|start to connect db...
+2018-10-21 21:29:46,061|connect OK
+2018-10-21 21:30:05,072|start to connect db...
+2018-10-21 21:30:05,096|connect OK
+2018-10-21 21:30:18,115|select sql:select * from share_user where open_id="zhoupj_t1"
+2018-10-21 21:30:18,129|select sql:select * from share_user where open_id="zhoupj_t1"
+2018-10-21 21:30:18,146|fail
+Traceback (most recent call last):
+  File "/Users/zhoupj/Documents/svncode/flwm/app/handler/UserHandler.py", line 20, in get
+    self.write(Result.succ(df.to_json(orient='records')))
+  File "/Users/zhoupj/Documents/svncode/flwm/app/common/Result.py", line 32, in succ
+    return json.dumps(rst,default=rst.__obj_2_json());
+  File "/Users/zhoupj/anaconda3/lib/python3.6/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+  File "/Users/zhoupj/anaconda3/lib/python3.6/json/encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/Users/zhoupj/anaconda3/lib/python3.6/json/encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+TypeError: 'dict' object is not callable
+2018-10-21 21:33:33,637|start to connect db...
+2018-10-21 21:33:33,659|connect OK
+2018-10-21 21:33:50,476|start to connect db...
+2018-10-21 21:33:50,497|connect OK
+2018-10-21 21:34:16,003|start to connect db...
+2018-10-21 21:34:16,025|connect OK
+2018-10-21 21:34:33,315|start to connect db...
+2018-10-21 21:34:33,337|connect OK
+2018-10-21 21:34:50,987|start to connect db...
+2018-10-21 21:34:51,007|connect OK
+2018-10-21 21:34:54,250|start to connect db...
+2018-10-21 21:34:54,268|connect OK
+2018-10-21 21:35:07,075|start to connect db...
+2018-10-21 21:35:07,106|connect OK
+2018-10-21 21:35:10,836|select sql:select * from share_user where open_id="zhoupj_t1"
+2018-10-21 21:35:10,850|select sql:select * from share_user where open_id="zhoupj_t1"
+2018-10-21 21:37:21,001|select sql:select * from share_user where open_id="zhoupj_t1"
+2018-10-21 21:37:21,010|select sql:select id,login_days from share_user where id="2"
+2018-10-21 21:37:21,131|update sql count:1
+2018-10-21 21:37:22,863|select sql:select * from share_user where open_id="zhoupj_t1"
+2018-10-21 21:37:22,867|select sql:select id,login_days from share_user where id="2"
+2018-10-21 21:37:22,870|update sql count:1
+2018-10-21 21:37:55,133|select sql:select * from share_user where open_id="zhoupj_t1"
+2018-10-21 21:37:55,138|select sql:select id,login_days from share_user where id="2"
+2018-10-21 21:37:55,142|update sql count:1
+2018-10-21 21:38:36,263|select sql:select * from share_user where id="2"
+2018-10-21 21:38:36,270|fail
+Traceback (most recent call last):
+  File "/Users/zhoupj/Documents/svncode/flwm/app/handler/UserHandler.py", line 41, in get
+    US.update_last_login_time(id);
+  File "/Users/zhoupj/Documents/svncode/flwm/app/service/UserService.py", line 68, in update_last_login_time
+    df = dbPool.query_any('select id,last_login_time from %s where id="%d"' % (UserService.__TBNAME, id));
+TypeError: %d format: a number is required, not str
+2018-10-21 21:39:40,658|start to connect db...
+2018-10-21 21:39:40,681|connect OK
+2018-10-21 21:39:42,060|select sql:select * from share_user where id="2"
+2018-10-21 21:39:42,073|fail
+Traceback (most recent call last):
+  File "/Users/zhoupj/Documents/svncode/flwm/app/handler/UserHandler.py", line 41, in get
+    US.update_last_login_time(id);
+  File "/Users/zhoupj/Documents/svncode/flwm/app/service/UserService.py", line 68, in update_last_login_time
+    df = dbPool.query_any('select id,last_login_time from %s where id="%d"' % (UserService.__TBNAME, id));
+TypeError: %d format: a number is required, not str
+2018-10-21 21:40:13,996|start to connect db...
+2018-10-21 21:40:14,019|connect OK
+2018-10-21 21:40:28,719|select sql:select * from share_user where id="2"
+2018-10-21 21:40:28,732|fail
+Traceback (most recent call last):
+  File "/Users/zhoupj/Documents/svncode/flwm/app/handler/UserHandler.py", line 41, in get
+    US.update_last_login_time(id);
+  File "/Users/zhoupj/Documents/svncode/flwm/app/service/UserService.py", line 68, in update_last_login_time
+    df = dbPool.query_any('select id,last_login_time from %s where id=%d' % (UserService.__TBNAME, id));
+TypeError: %d format: a number is required, not str
+2018-10-21 21:40:30,799|select sql:select * from share_user where id="2"
+2018-10-21 21:40:30,804|fail
+Traceback (most recent call last):
+  File "/Users/zhoupj/Documents/svncode/flwm/app/handler/UserHandler.py", line 41, in get
+    US.update_last_login_time(id);
+  File "/Users/zhoupj/Documents/svncode/flwm/app/service/UserService.py", line 68, in update_last_login_time
+    df = dbPool.query_any('select id,last_login_time from %s where id=%d' % (UserService.__TBNAME, id));
+TypeError: %d format: a number is required, not str
+2018-10-21 21:41:18,651|start to connect db...
+2018-10-21 21:41:18,671|connect OK
+2018-10-21 21:41:32,441|start to connect db...
+2018-10-21 21:41:32,467|connect OK
+2018-10-21 21:41:34,472|select sql:select * from share_user where id="2"
+2018-10-21 21:41:34,484|select sql:select id,last_login_time from share_user where id=2
+2018-10-21 21:41:34,487|update sql count:1
+2018-10-21 21:45:37,967|start to connect db...
+2018-10-21 21:45:37,987|connect OK
+2018-10-21 21:45:52,633|start to connect db...
+2018-10-21 21:45:52,657|connect OK
+2018-10-21 21:46:35,125|start to connect db...
+2018-10-21 21:46:35,146|connect OK
+2018-10-21 21:46:55,975|start to connect db...
+2018-10-21 21:46:55,996|connect OK
+2018-10-21 21:47:19,757|select sql:select * from share_user where id="2"
+2018-10-21 21:47:19,770|select sql:select id,last_login_time,this_login_time from share_user where id=2
+2018-10-21 21:47:19,776|update sql count:1
+2018-10-21 21:47:21,546|select sql:select * from share_user where id="2"
+2018-10-21 21:47:21,550|select sql:select id,last_login_time,this_login_time from share_user where id=2
+2018-10-21 21:47:21,554|update sql count:1
+2018-10-21 21:48:16,096|select sql:select * from share_user where open_id="zhoupj_t1"
+2018-10-21 21:48:16,101|select sql:select id,login_days,last_login_time from share_user where id="2"
+2018-10-21 21:48:16,212|update sql count:1
+2018-10-21 21:48:28,321|select sql:select * from share_user where id="2"
+2018-10-21 21:48:28,327|select sql:select id,last_login_time,this_login_time from share_user where id=2
+2018-10-21 21:48:28,336|update sql count:1
+2018-10-21 21:51:29,144|start to connect db...
+2018-10-21 21:51:29,164|connect OK
+2018-10-21 21:51:32,090|select sql:select * from share_user where id="2"
+2018-10-21 21:51:32,101|select sql:select id,last_login_time,this_login_time from share_user where id=2
+2018-10-21 21:51:32,104|update sql count:1
+2018-10-21 21:52:19,783|start to connect db...
+2018-10-21 21:52:19,811|connect OK
+2018-10-21 21:54:40,353|start to connect db...
+2018-10-21 21:54:40,376|connect OK
+2018-10-21 21:55:19,309|start to connect db...
+2018-10-21 21:55:19,338|connect OK
+2018-10-21 21:56:12,219|start to connect db...
+2018-10-21 21:56:12,243|connect OK
+2018-10-21 21:57:26,385|start to connect db...
+2018-10-21 21:57:26,420|connect OK
+2018-10-21 21:58:01,194|select sql:select * from share_activity where id=2
+2018-10-21 21:58:01,221|execute sqls :update share_user set is_member=1,member_deadline="2018-11-20" where id=2 #insert into share_buy_record (user_id,buy_date,act_id,is_sucess) values (2,"2018-10-21 21:58:01",2,1)
+2018-10-21 21:58:01,224|select sql:select * from share_user where id="<built-in function id>"
+2018-10-21 22:42:19,786|start to connect db...
+2018-10-21 22:42:19,812|connect OK
+2018-10-21 22:42:43,842|start to connect db...
+2018-10-21 22:42:43,864|connect OK
+2018-10-21 22:42:48,384|select sql:select * from share_user where id="2"
+2018-10-21 22:42:48,410|fail
+Traceback (most recent call last):
+  File "/Users/zhoupj/Documents/svncode/flwm/app/handler/UserHandler.py", line 52, in get
+    df = US.query_by_id(user_id);
+  File "/Users/zhoupj/Documents/svncode/flwm/app/service/UserService.py", line 59, in query_by_id
+    return self.__if_member_expire(df);
+  File "/Users/zhoupj/Documents/svncode/flwm/app/service/UserService.py", line 66, in __if_member_expire
+    if (today > deadline):
+TypeError: '>' not supported between instances of 'str' and 'datetime.date'
+2018-10-21 22:51:54,641|start to connect db...
+2018-10-21 22:51:54,668|connect OK
+2018-10-21 22:52:53,405|start to connect db...
+2018-10-21 22:52:53,420|connect OK
+2018-10-21 22:52:57,210|start to connect db...
+2018-10-21 22:52:57,244|connect OK
+2018-10-21 22:53:21,948|start to connect db...
+2018-10-21 22:53:21,965|connect OK
+2018-10-21 22:53:33,719|select sql:select * from share_activity where act_state=1
+2018-10-21 22:56:49,461|start to connect db...
+2018-10-21 22:56:49,491|connect OK
+2018-10-21 22:59:00,249|start to connect db...
+2018-10-21 22:59:00,276|connect OK
