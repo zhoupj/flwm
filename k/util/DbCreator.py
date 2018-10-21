@@ -117,11 +117,69 @@ class DbCreator:
         )ENGINE=InnoDB DEFAULT CHARSET=utf8;
     '''
 
+    __share_user_sql='''
+        create table if not exists share_user(
+             id int primary key auto_increment,
+             open_id varchar(32) not null,
+             name varchar(32) not null,
+             alias varchar(32)  comment '别名',   
+             is_member int default 0  comment '1会员，0不是',
+             member_deadline Date comment '会员到期日',
+             last_login_time Datetime comment '上一次登录时间',
+             this_login_time Datetime comment '这次登录时间',
+             login_days int default 0 comment '总共登录天数',
+             feature text comment '扩展数据',
+             UNIQUE KEY idx_uq_code (open_id)
+        )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+    '''
+
+    __share_buy_record='''
+         create table if not exists share_buy_record(
+             id int primary key auto_increment,
+             user_id int not null,
+             buy_date datetime not null,
+             act_id int,
+             is_sucess int comment '交易是否成功1是，o否'
+        )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+        '''
+         
+    __share_member_activity='''
+         create table if not exists share_activity(
+             
+             id int primary key auto_increment,
+             act_code varchar(8),
+             act_name varchar(16),
+             act_desc varchar(128),
+             act_state int comment '0失效，1生效',
+             amount int comment '单位分'
+        )ENGINE=InnoDB DEFAULT CHARSET=utf8;     
+        
+    '''
+
+    __share_article_sql='''
+        create table if not exists share_article(
+             id int primary key auto_increment,
+             publish_time datetime not null,
+             url varchar(512) not null ,
+             title varchar(128) not null,
+             digest varchar(256) not null,
+             ctx text ,
+             visit_count int default 0,
+             comment_count int default 0,
+             feature text 
+        )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+    '''
+
     def init_create_table(self):
         pm = PandasToMysql();
         pm.create_table(DbCreator.__share__base_sql);
         pm.create_table(DbCreator.__share_data_day_sql);
         pm.create_table(DbCreator.__share_data_finance_sql);
+        pm.create_table(DbCreator.__share_user_sql);
+        pm.create_table(DbCreator.__share_article_sql);
+        pm.create_table(DbCreator.__share_buy_record);
+        pm.create_table(DbCreator.__share_member_activity);
+
         print('over')
 
 

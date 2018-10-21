@@ -122,7 +122,7 @@ class KManager:
 if (__name__ == '__main__'):
     #pm = PandasToMysql();
     #KManager.kpi_m('2018-09-28',pm)
-    p_dt='2018-10-18';
+    p_dt='2018-10-19';
     dt=datetime.datetime.now().strftime('%Y-%m-%d')
     KManager.pull_data(p_dt);
     KManager.count_kpi(p_dt,s=True,m=True);
