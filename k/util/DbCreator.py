@@ -107,7 +107,7 @@ class DbCreator:
              kfjlrtbzz double(12,3) comment '扣非净利润同步增长',
              jbmgsytbzz double(12,3) comment '每股收益同步增长', 
              fund_holding double(12,3) comment '基金持有占流通股的比例（%）',
-             sb_holding double(12,3) comment '社保基金持有占流通股的比例（%）'
+             sb_holding double(12,3) comment '社保基金持有占流通股的比例（%）',
              isExpected int comment '-1 弱于期望，0 正常，1 超出期望',
              season_ma2 double(12,3) comment '最近两个季度净利润增长率的的exma',
              season_ma8 double(12,3) comment '最近10个季度的净利润增长率的exma',
