@@ -157,19 +157,33 @@ class DbCreator:
         
     '''
 
-    __share_article_sql='''
-        create table if not exists share_article(
+    __share_user_sel ='''
+        create table if not exists share_user_share_sel(
              id int primary key auto_increment,
-             publish_time datetime not null,
-             url varchar(512) not null ,
-             title varchar(128) not null,
-             digest varchar(256) not null,
-             ctx text ,
-             visit_count int default 0,
-             comment_count int default 0,
-             feature text 
+             user_id int not null,
+             share_code varchar(6) not null ,
+             add_time datetime not null,
+             inc_flu  double(5,2) comment '增长幅度',
+             group int comment '股票分组:1 观察，2候选，3 持有，4 淘汰',
+             tag varchar(500) comment '标记',
+             feature text ,
+             UNIQUE KEY idx_uq_code (user_id,share_code,group)
         )ENGINE=InnoDB DEFAULT CHARSET=utf8;
     '''
+
+    __share_article_sql = '''
+           create table if not exists share_article(
+                id int primary key auto_increment,
+                publish_time datetime not null,
+                url varchar(512) not null ,
+                title varchar(128) not null,
+                digest varchar(256) not null,
+                ctx text ,
+                visit_count int default 0,
+                comment_count int default 0,
+                feature text ,
+           )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+       '''
 
     def init_create_table(self):
         pm.create_table(DbCreator.__share__base_sql);

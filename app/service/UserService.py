@@ -52,18 +52,23 @@ class UserService:
 
     def query(self,open_id):
         df = dbPool.query_any('select * from %s where open_id="%s"' % (UserService.__TBNAME, open_id));
+        if(df.empty):
+            return None;
         return self.__if_member_expire(df);
 
     def query_by_id(self, id):
         df = dbPool.query_any('select * from %s where id="%s"' % (UserService.__TBNAME, id));
+        if(df.empty):
+            return None;
         return self.__if_member_expire(df);
-        return df;
 
     def __if_member_expire(self, df):
         id = df.loc[0, 'id']
         deadline = df.loc[0, 'member_deadline'];
+        print(deadline)
+
         today = datetime.datetime.now().strftime('%Y-%m-%d');
-        if (deadline!=None and today > deadline):
+        if (deadline!=None and today > str(deadline)):
             df.loc[0, 'member_deadline'] = None;
             df.loc[0, 'is_member'] = 0;
             dbPool.execute(

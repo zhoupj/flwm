@@ -12,8 +12,7 @@ import tornado.options
 from tornado.options import options, define
 from tornado.web import url, RequestHandler
 from app.handler.UserHandler import Register,Login,Quit,BuyMember,Suggest,MemberActivity
-from app.handler.ErrorHandler import  ErrorHandler;
-
+from app.handler.IndexHandler import AtcDetail,AtcList;
 #https://blog.csdn.net/tichimi3375/article/details/82109679
 
 define('port', default=8793, type=int, help='run server on the given port.')
@@ -26,10 +25,13 @@ if __name__ == '__main__':
         (r'/user/quit', Quit),
         (r'/user/member_activity', MemberActivity),
         (r'/user/buy_member',BuyMember),
-        (r'/user/suggest', Suggest)
+        (r'/user/suggest', Suggest),
+        (r'/index/atclist', AtcList),
+        (r'/index/atcdetail', AtcDetail)
         #url(r'/python', ItcastHandler, {'subject': 'python'}, name='python_url')
     ], debug=True)
     http_server = tornado.httpserver.HTTPServer(app)
+    #http_server.start(4)
     http_server.listen(options.port)
     tornado.ioloop.IOLoop.current().start()
 

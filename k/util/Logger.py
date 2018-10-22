@@ -15,6 +15,18 @@ class MyLogUtil:
         d_handler.setLevel(logging.INFO)
         d_handler.setFormatter(logging.Formatter("%(asctime)s|%(message)s"))
 
+        # 创建一个logger
+        suggest_log = logging.getLogger('suggest');
+        suggest_log. setLevel(logging.INFO)
+        s_handler = logging.handlers.TimedRotatingFileHandler(PATH + 'suggest.log', when='midnight', interval=1,
+                                                              backupCount=7,
+                                                              atTime=datetime.time(0, 0, 0, 0))
+        suggest_log.addHandler(s_handler);
+
+
+        d_handler.setLevel(logging.INFO)
+        d_handler.setFormatter(logging.Formatter("%(asctime)s|%(message)s"))
+
         logger = logging.getLogger('mylogger')
         if(debug=='true'):
             logger.setLevel(logging.DEBUG)
@@ -43,6 +55,7 @@ class MyLogUtil:
 
         self.logger=logger;
         self.digest_log=digest_log;
+        self.suggest_log=suggest_log;
 
 
 ml=MyLogUtil(ConfigDict['k_log_path'],ConfigDict['debug'],ConfigDict['console'])
