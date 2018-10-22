@@ -1,10 +1,9 @@
 from app.common.util.LogUtil import digest_log,logger,suggest_log;
 from tornado.web import url, RequestHandler;
 from app.common.Result import Result;
-from app.service.UserService import UserService;
-from app.service.MemberActivityService import  MemberActivityService;
+from app.service.UserService import US;
+from app.service.MemberService import  MS;
 
-US = UserService();
 
 class Register(RequestHandler):
     def post(self, *args, **kwargs):
@@ -48,7 +47,7 @@ class Quit(RequestHandler):
 class MemberActivity(RequestHandler):
     def post(self, *args, **kwargs):
         try:
-            df = MemberActivityService.query_all();
+            df = MS.query_all();
             self.write(Result.succ(df.to_json(orient='records')));
         except Exception as e:
             logger.exception('fail');

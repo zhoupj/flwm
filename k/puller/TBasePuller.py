@@ -1,38 +1,28 @@
 import traceback;
 import datetime;
 import pandas as pd;
-from k.util.Logger import Logger;
-from k.util.PandasToMysql import PandasToMysql;
+from k.util.PandasToMysql import pm;
+from k.util.Logger import  logger,digest_log;
 
 class TBasePuller:
 
     def pull(self,dt=None,to_mysql=True,to_csv=False):
+        succ=True;
+        df=None;
         try:
-          Logger.log('pull tbase data,dt',dt)
           df=  self._run(dt);
           if(df.empty):
-              Logger.log('df is empty');
-              return df;
-
-          if (to_mysql):
-                pm = PandasToMysql();
-                self._save_to_mysql(pm,df);
-          if (to_csv):
-                self._save_to_csv(df)
-          return df;
+              logger.info('get empty df for '+self.__class__.__name__);
+          else:
+              if (to_mysql):
+                    self._save_to_mysql(pm,df);
+              if (to_csv):
+                    self._save_to_csv(df)
         except Exception as e:
-            print('pull tbase  error. dt:',dt);
-            print(e.__traceback__)
-            msg = traceback.format_exc()  # 方式1
-            print(msg)
-            __err_df = pd.DataFrame();
-            __err_df.loc[0, 'class'] = __class__.__name__;
-            __err_df.loc[0, 'dt'] = dt;
-            __err_df.loc[0, 'date'] = datetime.date.today();
-            __err_df.loc[0, 'err'] = e.__traceback__.__class__
-            __err_df.to_csv('../log/puller-t-error.log', mode='a');
-            return None;
-
+            logger.exception('tbase puller error')
+            succ=False;
+        digest_log.info('t-puller|%s|%s|%s|%s' % (self.__class__.__name__, dt,str(to_mysql),succ))
+        return df;
     def _save_to_mysql(self, pm,df):
         return
 

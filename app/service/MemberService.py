@@ -1,7 +1,8 @@
-from app.common.util.DBPool import dbPool;
-from app.common.util.LogUtil import digest_log,logger;
 import datetime;
-import  pandas as pd;
+
+import pandas as pd;
+
+from app.common.util.DBPool import dbPool;
 
 '''
          create table if not exists share_activity(
@@ -14,23 +15,18 @@ import  pandas as pd;
 
     '''
 
-class MemberActivityService:
+class MemberService:
 
-
-    @staticmethod
-    def query_all():
+    def query_all(self):
         return dbPool.query('share_activity',where='act_state=1')
 
-    @staticmethod
-    def query_by_id(id):
+    def query_by_id(self,id):
         return dbPool.query('share_activity',where='id=%d'%(id));
 
-    @staticmethod
-    def save_activity(df):
+    def save_activity(self,df):
         dbPool.save('share_activity',df,primaryKeys=['act_name']);
 
-    @staticmethod
-    def get_deadline_by_id(act_id):
+    def get_deadline_by_id(self,act_id):
         act_df = dbPool.query_any('select * from share_activity where id=%d' % (act_id));
         act_code = act_df.loc[0, 'act_code'];
 
@@ -47,6 +43,7 @@ class MemberActivityService:
             dl = today + datetime.timedelta(days=365);
 
         return dl.strftime('%Y-%m-%d');
+MS=MemberService();
 
 if(__name__=='__main__'):
     df=pd.DataFrame();
@@ -79,4 +76,4 @@ if(__name__=='__main__'):
     df.loc[idx, 'act_desc'] = '限时五折';
     df.loc[idx, 'amount'] = '42900';
 
-    MemberActivityDO.save_activity(df)
+    MAS.save_activity(df)

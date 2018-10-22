@@ -11,8 +11,8 @@ sp.pull();
 dc=DbCreator()
 dc.init_create_table();
 
-KManager.pull_data('2011-01-01');
-KManager.count_kpi('2011-01-01');
+KManager.pull_data('2018-10-22');
+KManager.count_kpi('2018-10-22');
 
 FinManager.pull_data();
 FinManager.count_kpi();

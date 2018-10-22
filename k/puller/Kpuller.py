@@ -1,42 +1,33 @@
 # encoding: utf-8
 
-import tushare as ts;
-import pandas as pd;
-import numpy as np;
 import baostock as bs
-import datetime;
-from k.puller.SharePuller import SharePuller;
+import numpy as np;
+import pandas as pd;
+import tushare as ts;
+
 from k.Config import Config;
-from k.util.Logger import  Logger;
-from k.util.PandasToMysql import  PandasToMysql;
-from k.util.FileUtil import FileUtil;
-from k.util.DbCreator import DbCreator;
-from k.util.PoolManager import PoolManger
 from k.puller.BasePuller import BasePuller;
-import  traceback;
+from k.util.DbCreator import DbCreator;
 
 
 class Kpuller(BasePuller):
-
-    def _run(self,code,start,end):
+    def _run(self, code, start, end):
         bs_code = ('sh.' + code) if code[0] == '6' else ('sz.' + code);
-        Logger.log('pull k data start,code:' + bs_code + ',start_date:' + start + ',end_date:' + end);
-        df=self.__pull_kdata_from_baostock_s(bs_code,start,end);
-        Logger.log('pull k data end,code:' + bs_code );
+        df = self.__pull_kdata_from_baostock_s(bs_code, start, end);
         return df;
 
-    def _save_to_mysql(self,pm,df):
+    def _save_to_mysql(self, pm, df):
         df = df[df[Config.tradestatus] == '1']
-        pm.save(DbCreator.share_data_day, df,primaryKeys=[Config.code,Config.mem_date]);
+        pm.save(DbCreator.share_data_day, df, primaryKeys=[Config.code, Config.mem_date]);
 
-    def _save_to_csv(self,code,df):
+    def _save_to_csv(self, code, df):
         df.to_csv('../data/' + code + 'kd.csv', mode='w', header=True);
 
-    #pull 2011-01-01  到最新的数据 （执行一次）
-    def __pull_kdata_from_baostock_s(self,code,start_date,end_date):
+    # pull 2011-01-01  到最新的数据 （执行一次）
+    def __pull_kdata_from_baostock_s(self, code, start_date, end_date):
 
-        df=self.__parse_baostock_data(code,start_date,end_date,'d')
-        #parse
+        df = self.__parse_baostock_data(code, start_date, end_date, 'd')
+        # parse
         df["id"] = np.arange(df.shape[0]);
         df.set_index('id', inplace=True);
         # code处理
@@ -86,7 +77,6 @@ class Kpuller(BasePuller):
         bs.logout()
         return result;
 
-
     # pull 上市日期  到2011-01-01的数据 （执行一次）
     def __pull_kdata_from_tushare(self):
         '''
@@ -112,17 +102,18 @@ class Kpuller(BasePuller):
         for index, row in sz_df.iterrows():
             code = row['code'];
             timeToMarket = row['timeToMarket']
-            if (timeToMarket == '' or timeToMarket == pd.NaT or timeToMarket != timeToMarket or timeToMarket>='2011-01-01'):
+            if (
+                            timeToMarket == '' or timeToMarket == pd.NaT or timeToMarket != timeToMarket or timeToMarket >= '2011-01-01'):
                 continue;
             print('pull data code:' + code + ',date:' + timeToMarket + ',i:' + str(index));
 
-            ts_df= ts.get_k_data(code,start=timeToMarket,end='2011-01-01');#前复权数据
-            ts_df= ts_df[['date','code','open','high','low','close','volume']];#chg order
+            ts_df = ts.get_k_data(code, start=timeToMarket, end='2011-01-01');  # 前复权数据
+            ts_df = ts_df[['date', 'code', 'open', 'high', 'low', 'close', 'volume']];  # chg order
             ts_df[Config.turn] = 0;
             ts_df[Config.tradestatus] = 1;
             ts_df[Config.peTTM] = 0;
             ts_df[Config.isST] = 0;
-            ts_df.set_index(['date'],inplace=True)
+            ts_df.set_index(['date'], inplace=True)
 
             # parse and reset index
             '''
@@ -140,34 +131,29 @@ class Kpuller(BasePuller):
                 isST='isST';#是否ST
             '''
             # 选出特定日期的(停牌的数据不要了)
-            #fill_ds = KDataGrappler.__szzs_date_serial[KDataGrappler.__szzs_date_serial >= timeToMarket]
-            #ts_df=ts_df.reindex(fill_ds)#停牌的数据补充上去
-            ts_df=ts_df.reset_index()
-            #ts_df["id"] = np.arange(ts_df.shape[0]);
-            #ts_df.set_index('id', inplace=True);
+            # fill_ds = KDataGrappler.__szzs_date_serial[KDataGrappler.__szzs_date_serial >= timeToMarket]
+            # ts_df=ts_df.reindex(fill_ds)#停牌的数据补充上去
+            ts_df = ts_df.reset_index()
+            # ts_df["id"] = np.arange(ts_df.shape[0]);
+            # ts_df.set_index('id', inplace=True);
 
-            #读取已有数据
-            bs_df=pd.read_csv('./data/' + code + 'kd.csv',dtype=np.str,index_col='id')
-            bs_df=bs_df[bs_df['tradestatus']=='1'];#停牌的数据不要了
-            #print(bs_df);
-            ts_df=pd.concat([ts_df,bs_df], axis=0,ignore_index=True )
-            #ts_df=ts_df.append(bs_df)
+            # 读取已有数据
+            bs_df = pd.read_csv('./data/' + code + 'kd.csv', dtype=np.str, index_col='id')
+            bs_df = bs_df[bs_df['tradestatus'] == '1'];  # 停牌的数据不要了
+            # print(bs_df);
+            ts_df = pd.concat([ts_df, bs_df], axis=0, ignore_index=True)
+            # ts_df=ts_df.append(bs_df)
             ts_df["id"] = np.arange(ts_df.shape[0]);
             ts_df.set_index('id', inplace=True);
             ts_df.to_csv('./data/' + code + 'kd.csv', mode='w', header=True);
-            #print(ts_df);
-            #数字格式化
-            #print(ts_df.dtypes)
-            print('pull data code:' + code + ',date:' + timeToMarket + ',i:' + str(index)+',end');
+            # print(ts_df);
+            # 数字格式化
+            # print(ts_df.dtypes)
+            print('pull data code:' + code + ',date:' + timeToMarket + ',i:' + str(index) + ',end');
 
 
-#test
+# test
 if (__name__ == '__main__'):
-    kp=Kpuller();
-    df= kp.pull('002228','2018-10-08','2018-10-15',False)
+    kp = Kpuller();
+    df = kp.pull('002228', '2018-10-08', '2018-10-15', False)
     print(df)
-
-
-
-
-

@@ -22,6 +22,6 @@ if (__name__ == '__main__'):
     df=pd.DataFrame(nd,columns=['id','code',Config.incOfOneYear,Config.incOfHalfYear,Config.incOf50d])
     df2=df.copy()
     inR=Rps();
-    inR.run(df)
+    inR.run(df,'2018-01-01',to_mysql=False)
     print(df)
 

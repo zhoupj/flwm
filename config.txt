@@ -5,7 +5,15 @@ db_name=fin_data
 user=root
 password=123456
 
-#log
+#k log
 root_path=/Users/zhoupj/Documents/svncode/flwm/
-k_log_path=/Users/zhoupj/Documents/svncode/flwm/app/log/
-app_log_path=/Users/zhoupj/Documents/svncode/flwm/k/log/
+k_log_path=/Users/zhoupj/Documents/svncode/flwm/k/log/
+k_to_mysql=false
+
+#app log
+app_log_path=/Users/zhoupj/Documents/svncode/flwm/app/log/
+app_to_mysql=false
+
+#debug
+debug=true
+console=true

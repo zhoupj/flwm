@@ -1,6 +1,6 @@
 from app.common.util.DBPool import dbPool;
 from app.common.util.LogUtil import digest_log,logger;
-from app.service.MemberActivityService import MemberActivityService;
+from app.service.MemberService import MS;
 import  pandas as pd;
 import datetime
 
@@ -73,7 +73,7 @@ class UserService:
     def query_member_detail(self,id):
         buy_df = dbPool.query_any('select * from %s where user_id=%d order by id desc limit 1' % (UserService.__RECORD, id));
         act_id=buy_df.loc[0,'act_id'];
-        act_df=MemberActivityService.query_by_id(act_id);
+        act_df=MS.query_by_id(act_id);
         return act_df;
 
     def update_login_days(self,id):
@@ -90,7 +90,7 @@ class UserService:
     def buy_vip(self,user_id,act_id,succ):
         list_sql=[];
         if(succ):
-            dead_date=MemberActivityService.get_deadline_by_id(act_id)
+            dead_date=MS.get_deadline_by_id(act_id)
             sql_user='update %s set is_member=1,member_deadline="%s" where id=%s '%(UserService.__TBNAME, dead_date,user_id)
             list_sql.append(sql_user);
 
@@ -100,10 +100,11 @@ class UserService:
         list_sql.append(buy_sql);
         dbPool.execute(list_sql);
 
+US=UserService();
 
 if(__name__=='__main__'):
     pd.set_option('display.width', None)  # 解决列之间的省略号
-    df=MemberActivityService.query_all();
+    df=MS.query_all();
     print(df);
     us=UserService();
     us.create('open_id_test','周来周');

@@ -1,17 +1,15 @@
-
-
-from k.puller.TBasePuller import TBasePuller;
-from k.Config import  Config;
-import requests
-import re
+import datetime;
 import json
-import  pandas as pd;
+
+import pandas as pd;
+import requests
 from copyheaders import headers_raw_to_dict
-import  datetime;
-from k.util.Logger import Logger;
-from k.util.StrUtil import StrUtil;
-from k.util.PandasToMysql import PandasToMysql;
+
+from k.Config import Config;
+from k.puller.TBasePuller import TBasePuller;
 from k.util.DbCreator import DbCreator;
+from k.util.Logger import logger;
+from k.util.StrUtil import StrUtil;
 
 post_headers_raw=b'''
 Accept:*/*
@@ -51,7 +49,7 @@ class HkHoldPuller(TBasePuller):
         df = self.__get_data(dt);
 
         if(df.empty):
-            print('pull hk but no date ')
+            logger.info('pull hk but no date ')
             return df;
 
         return df;
@@ -60,7 +58,7 @@ class HkHoldPuller(TBasePuller):
         pm.update(DbCreator.share_data_day, df, primaryKeys=[Config.code, Config.db_date]);
 
     def _save_to_csv(self,df):
-        df.to_csv('../log/hk-holding.csv');
+        df.to_csv('hk-holding.csv');
 
     def __get_data(self,dt):
 
@@ -74,17 +72,17 @@ class HkHoldPuller(TBasePuller):
         # 任意相关url
         init_url = 'http://dcfm.eastmoney.com//em_mutisvcexpandinterface/api/js/get';
         ctx = self.session.get(url=init_url,params=params_dict, headers=header_dict);
-        print(ctx.url)
+
         # print 'ctx:'+ctx.content;
         # print(ctx.headers)
         # print(ctx.cookies)
         tp=self.__parse(ctx);
+        logger.debug('%s|%d'%(ctx.url,tp[0]));
 
         df=pd.DataFrame();
         i=0;
 
         for p in range(1,tp[0],1):
-            Logger.log("request page no:",p)
             params_dict['p']=p;
 
             ctx = self.session.get(url=init_url, params=params_dict, headers=header_dict);
@@ -115,5 +113,5 @@ class HkHoldPuller(TBasePuller):
 
 if(__name__=='__main__'):
     hp=HkHoldPuller();
-    df=hp.pull('2018-10-18',to_mysql=True)
+    df=hp.pull('2018-10-18',to_mysql=False)
     print(df)

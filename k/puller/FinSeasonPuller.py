@@ -1,8 +1,6 @@
 from k.puller.FinYearPuller import  FinYearPuller;
-from k.util.DateUtil import DateUtil;
-import  json;
-import pandas as pd;
-from k.util.SpiderHeaderUtil import SpiderHeaderUtil;
+
+
 class FinSeasonPuller(FinYearPuller):
 
     def _get_url(self,code):
@@ -15,6 +13,6 @@ class FinSeasonPuller(FinYearPuller):
 
 if(__name__=='__main__'):
     fp=FinSeasonPuller()
-    df =fp.pull('000860',start='2018-06-30',end='2018-06-30',to_mysql=True)
+    df =fp.pull('603706',start='2018-06-30',end='2018-06-30',to_mysql=True)
     df.to_csv('f.csv')
     print(df)

@@ -1,14 +1,13 @@
-from k.puller.BasePuller import BasePuller ;
-import tushare  as ts;
 import json;
-import pandas as pd;
-import numpy as np;
 import re;
-import requests;
-from k.util.DateUtil import  DateUtil;
-from k.util.DbCreator import  DbCreator;
-from k.util.SpiderHeaderUtil import SpiderHeaderUtil;
 
+import pandas as pd;
+import requests;
+
+from k.puller.BasePuller import BasePuller;
+from k.util.DateUtil import DateUtil;
+from k.util.DbCreator import DbCreator;
+from k.util.SpiderHeaderUtil import SpiderHeaderUtil;
 
 
 class FinYearPuller(BasePuller):

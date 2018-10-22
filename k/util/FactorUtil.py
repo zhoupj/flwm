@@ -22,7 +22,7 @@ class FactorUtil:
             else:
                 b = i - days + 1
             block_df = df.iloc[b:i + 1, 0:5]
-            RSV = ((block_df.loc[-1, close_idx] - block_df.iloc[:, low_idx].min()) * 1.0 / (block_df.iloc[:, high_idx].max() - block_df.iloc[:, low_idx].min())) * 100
+            RSV = ((block_df.loc[-1, close] - block_df.loc[:, low].min()) * 1.0 / (block_df.iloc[:, high].max() - block_df.iloc[:, low].min())) * 100
             if i==0:
                 K=RSV
                 D=RSV
@@ -66,6 +66,17 @@ class FactorUtil:
                 df.loc[i,'expma']=(2*df.loc[i,close]+(i)*df.loc[i-1,'expma'])/(i+2)
         return df;
 
+    @staticmethod
+    # expma
+    def expma_list(lst):
+        exp=0;
+        for i in range(len(lst)):
+            if i == 0:
+                exp = lst[0];
+            if i > 0:
+                exp = (2 * lst[i] + i * exp) / (i + 2)
+        return exp;
+
     #计算均线
     @staticmethod
     def ma(df,close='close',*args):
@@ -92,5 +103,10 @@ if __name__ == '__main__':
     #plt.show()
     exma=FactorUtil.expma(df,'close')
     print(exma)
+
+    print(FactorUtil.expma_list([9,5,0,7,6,8,1]))
+    print(FactorUtil.expma_list([1, 2, 3, 7, 6,7,4]))
+    print(FactorUtil.expma_list([3, 2, 3, 3, 3,3,4]))
+    print(FactorUtil.expma_list([9, 5, 6, 1, 0,2,1]))
 
 

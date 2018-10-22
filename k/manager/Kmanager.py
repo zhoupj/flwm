@@ -1,29 +1,25 @@
+import datetime;
+import time;
 
-from k.util.PoolManager import PoolManger;
-
-from k.puller.SharePuller import SharePuller;
-
-from k.algorithm.PreProcess import  PreProcess;
-from k.algorithm.CreateRecord import  CreateRecord;
-from k.algorithm.Ma import Ma;
+from k.Config import Config;
+from k.algorithm.CreateRecord import CreateRecord;
 from k.algorithm.DeviationsRatio import DeviationsRatio;
 from k.algorithm.FluctionRatio import FluctionRatio;
-from k.algorithm.TurnRatio import TurnRatio;
-from k.algorithm.PeRank import PeRank;
 from k.algorithm.IncrementRatio import IncrementRatio
-from k.algorithm.ms.Rps import  Rps;
+from k.algorithm.Ma import Ma;
+from k.algorithm.PeRank import PeRank;
 from k.algorithm.Pipeline import Pipeline;
-
-from k.puller.Kpuller import Kpuller;
-
-import datetime;
-import  time;
-from k.util.PandasToMysql import PandasToMysql;
-from k.util.DbCreator import DbCreator;
-from k.util.Logger import  Logger;
-from k.Config import  Config;
-from k.util.DateUtil import  DateUtil;
+from k.algorithm.PreProcess import PreProcess;
+from k.algorithm.TurnRatio import TurnRatio;
+from k.algorithm.ms.Rps import Rps;
 from k.puller.HkHoldPuller import HkHoldPuller;
+from k.puller.Kpuller import Kpuller;
+from k.puller.SharePuller import SharePuller;
+from k.util.DateUtil import DateUtil;
+from k.util.DbCreator import DbCreator;
+from k.util.Logger import logger;
+from k.util.PandasToMysql import pm;
+from k.util.PoolManager import PoolManger;
 
 THREAD_NUM=1;
 
@@ -32,7 +28,6 @@ class KManager:
     @staticmethod
     def pull_data(start_date=None):
         plm = PoolManger(THREAD_NUM);
-        pm = PandasToMysql();
 
         shp = SharePuller();
         df = shp.query_from_mysql();
@@ -58,11 +53,9 @@ class KManager:
             hkp.pull(dt);
             time.sleep(3)
 
-        pm.close();
 
     @staticmethod
     def count_kpi(start_date,s=True,m=True):
-        pm = PandasToMysql();
         shp = SharePuller();
         df = shp.query_from_mysql();
 
@@ -80,7 +73,7 @@ class KManager:
                     start = start_date;
                     KManager.kpi_s(code, start_date, pm, dict)
             print('===kpi result======')
-            Logger.log(dict)
+            print(dict)
 
         # ================================
         ## 多指标计算
@@ -91,21 +84,19 @@ class KManager:
                 KManager.kpi_m(start_date, pm);
             elif (start_date <= end):
                 for dt in DateUtil.getDateSeq(start_date):
-                    Logger.log('m kip,dt='+dt);
                     KManager.kpi_m(dt, pm);
-            pm.close();
 
     @staticmethod
     def kpi_s(code,start_date,pm,dict):
 
         df = pm.query(DbCreator.share_data_day, where='code=\'' + code + '\' and trade_date>=\'2011-01-01\'');
 
-        Logger.log('start to kpi:', code,' size:',df.shape[0])
+        logger.info('start to kpi:'+code+' size:'+str(df.shape[0]));
         #流水线
         succ=Pipeline.execute(PreProcess(),[CreateRecord(),DeviationsRatio(),FluctionRatio(),
                           IncrementRatio(),Ma(),TurnRatio(),PeRank()],code,df,start_date)
 
-        Logger.log('end to kpi:', code)
+        logger.info('end to kpi:'+code)
         dict[code]=succ;
 
     @staticmethod
@@ -115,14 +106,14 @@ class KManager:
         mdf=mdf[[Config.id,Config.incOfOneYear,Config.incOfHalfYear,Config.incOf50d]]
         mdf=mdf.dropna()
         rps = Rps();
-        rps.run(mdf,True);
+        rps.run(mdf,start_date,True);
 
 
 #main
 if (__name__ == '__main__'):
     #pm = PandasToMysql();
     #KManager.kpi_m('2018-09-28',pm)
-    p_dt='2018-10-1';
+    p_dt='2018-10-22';
     dt=datetime.datetime.now().strftime('%Y-%m-%d')
     KManager.pull_data(p_dt);
     KManager.count_kpi(p_dt,s=True,m=True);

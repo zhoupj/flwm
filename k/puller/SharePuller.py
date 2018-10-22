@@ -1,19 +1,13 @@
 # encoding: utf-8
 
-import tushare as ts;
-import pandas as pd;
 import numpy as np;
-from sqlalchemy import create_engine;
-from sqlalchemy.types import Integer;
-from sqlalchemy.types import BigInteger;
-from sqlalchemy.types import String;
-from sqlalchemy.types import Date;
-from sqlalchemy.types import Float;
-from k.util.PandasToMysql import PandasToMysql;
-from k.util.DbCreator import DbCreator;
-from k.puller.BasePuller import BasePuller;
+import pandas as pd;
+import tushare as ts;
+
 from k.Config import Config;
 from k.puller.TBasePuller import TBasePuller;
+from k.util.DbCreator import DbCreator;
+from k.util.PandasToMysql import pm;
 
 '''
 Pandas所支持的数据类型: 
@@ -77,8 +71,6 @@ class SharePuller(TBasePuller):
         df.to_csv(CSV_FILE, mode='w', header=True, encoding='utf-8');
 
     def query_from_mysql(self,code=None):
-
-        pm = PandasToMysql();
         df=None;
         if(code==None):
             df = pm.query(DbCreator.share_base)
@@ -88,8 +80,6 @@ class SharePuller(TBasePuller):
         df = df[df[Config.timeToMarket] != '0000-00-00'];
         df=  df.sort_values(by=[Config.code])
         df.index= np.arange(0,df.shape[0],1)
-        print(df);
-        pm.close();
 
         return df;
 

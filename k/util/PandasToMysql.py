@@ -2,9 +2,11 @@ import pymysql
 import pandas as pd
 import numpy as np
 from sqlalchemy import create_engine;
-from k.util.Logger import  Logger;
+from k.util.Logger import logger,digest_log;
 from k.Config import Config;
 from GlobalConfig import ConfigDict;
+#from DBUtils.PooledDB import PooledDB;#链接池技术
+
 '''
 need to make sure that the field name in mysql is same with the column name in dataFrame.
 '''
@@ -13,29 +15,18 @@ class PandasToMysql:
     __use_num=0;
     __instance=None;
 
-    @staticmethod
-    #目前未有锁，会有问题
-    def instance():
-        if(PandasToMysql.__instance!=None):
-            PandasToMysql.__use_num += 1;
-            return PandasToMysql.__instance
-        pm=PandasToMysql();
-        PandasToMysql.__use_num+=1;
-        PandasToMysql.__instance=pm;
-        return pm;
-
-
     def __init__(self,host=ConfigDict['ip'],user=ConfigDict['user'],password=ConfigDict['password'],db_name=ConfigDict['db_name']):
 
         try:
-            Logger.log('start to connect db...');
+            logger.info('start to connect db');
             # 打开数据库连接
             self.__conn = pymysql.connect(host, user, password, db_name,charset='utf8');
             self.__cursor=self.__conn .cursor();
             self.__engine = create_engine('mysql+pymysql://'+user+':'+password+'@'+host+'/'+db_name+'?charset=utf8')
-            Logger.log('connect OK');
+            logger.info('connect OK');
         except BaseException as be:
-            print('connect to mysql error:',be)
+            logger.exception('connect error');
+            raise  be;
 
 
     def create_table(self,sql):
@@ -76,7 +67,7 @@ class PandasToMysql:
     '''
     def save(self, table_name, df, primaryKeys=[Config.code, Config.db_date]):
         if (df.empty):
-            print('no date to save')
+            logger.info('no data to save ')
             return
 
         exist=[];
@@ -87,9 +78,7 @@ class PandasToMysql:
         update_df=df[exist];
         insert_df=df[not_exist]
 
-        Logger.log('save sql record count:' + str(df.shape[0]),'insert',
-                   insert_df.shape[0],'update',update_df.shape[0]);
-
+        logger.info('save db count:%d,insert %d,update:%d'%(df.shape[0],insert_df.shape[0],update_df.shape[0]))
 
         self.__insert(table_name,insert_df);
         self.update(table_name,update_df,primaryKeys)
@@ -104,7 +93,7 @@ class PandasToMysql:
             if (vi < len(primaryKeys) - 1):
                 chip = chip + ' and ';
         sql = sql_prefix + chip;
-        Logger.log('select *',sql);
+        #logger.debug('select *'+sql);
         df = pd.read_sql_query(sql, self.__engine);
         if(df.empty):
             return False;
@@ -125,21 +114,22 @@ class PandasToMysql:
             if (i != df.index[-1]):
                 chip = chip + ',';
             sql = sql + chip;
-        Logger.log('insert sql record count:' + str(df.shape[0]));
+        logger.debug('insert sql record count:' + str(df.shape[0]));
         self.__cursor.execute(sql);
         self.__conn.commit();
 
     def update(self, table_name, df, primaryKeys):
 
         if (df.empty):
-            print('no date to update')
+            logger.info('no date to update')
             return
 
-        try:
-            if (primaryKeys == '' or primaryKeys == None):
-                raise Exception('primaryKeys is None');
-            sql_prefix = 'update ' + table_name + ' set ';
+        if (primaryKeys == '' or primaryKeys == None):
+            raise Exception('primaryKeys is None');
 
+        try:
+
+            sql_prefix = 'update ' + table_name + ' set ';
             sql='';
             #for i in np.arange(df.shape[0]):
             for i in df.index:
@@ -157,13 +147,12 @@ class PandasToMysql:
                     if (vi < len(primaryKeys) - 1):
                         chip = chip + ' and ';
                 sql = sql_prefix + chip;
-
                 self.__cursor.execute(sql);
-            Logger.log('update sql count:'+str(df.shape[0]));
+            logger.debug('update sql count:'+str(df.shape[0]));
             self.__conn.commit();
         except BaseException as be:
             self.__conn.rollback();
-            print('update table error:', be,'sql',sql)
+            logger.exception('updat db error')
             raise be;
 
     def __parse_fields__(self,lst):
@@ -202,7 +191,7 @@ class PandasToMysql:
         sql='select * from '+table_name ;
         if(where!=None):
             sql=sql+' where '+where;
-        Logger.log('select sql:'+sql)
+        logger.debug('select sql:'+sql)
         df = pd.read_sql_query(sql, self.__engine );
         if(index_col!=None):
             df.set_index(index_col,inplace=True)
@@ -210,14 +199,14 @@ class PandasToMysql:
 
     # 'a>0 and b>0'
     def query_any(self, sql, index_col=None):
-        Logger.log('select sql:' + sql)
+        logger.debug('select sql:' + sql)
         df = pd.read_sql_query(sql, self.__engine);
         if (index_col != None):
             df.set_index(index_col, inplace=True)
         return df;
 
     def close(self):
-
+        print('db close')
         if(self==PandasToMysql.__instance):
              PandasToMysql.__use_num-=1;
              if(PandasToMysql.__use_num==0):
@@ -227,10 +216,11 @@ class PandasToMysql:
             self.__conn.close();
 
 
+pm=PandasToMysql();
 
 #test
 if (__name__ == '__main__'):
-     pm=PandasToMysql('127.0.0.1','root','123456','fin_data');
+     #pm=PandasToMysql('127.0.0.1','root','123456','fin_data');
      create_table_sql='''
          create table IF NOT EXISTS tb_emp (
              id int primary key auto_increment,
@@ -263,13 +253,6 @@ if (__name__ == '__main__'):
      df=pm.query('tb_emp','age>10');
      print(df.dtypes)
      print(df);
-     pm.close();
-
-     pm=PandasToMysql.instance();
-     pm = PandasToMysql.instance();
-     pm.close();
-     pm.close();
-
 
      df=pm.query_any('select * from share_data_day where code=\'000860\' order by trade_date desc limit 20');
      print(df);

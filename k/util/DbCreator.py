@@ -1,5 +1,5 @@
 # encoding: utf-8
-from k.util.PandasToMysql import  PandasToMysql;
+from k.util.PandasToMysql import pm;
 class DbCreator:
     share_base='share_data_basic';
     share_data_day = 'share_data_day';
@@ -107,11 +107,12 @@ class DbCreator:
              kfjlrtbzz double(12,3) comment '扣非净利润同步增长',
              jbmgsytbzz double(12,3) comment '每股收益同步增长', 
              fund_holding double(12,3) comment '基金持有占流通股的比例（%）',
+             sb_holding double(12,3) comment '社保基金持有占流通股的比例（%）'
              isExpected int comment '-1 弱于期望，0 正常，1 超出期望',
              season_ma2 double(12,3) comment '最近两个季度净利润增长率的的exma',
-             season_ma10 double(12,3) comment '最近10个季度的净利润增长率的exma',
-             season_strenghth_ranking_2 double(5,2) comment '两个季度排名',
-             season_strenghth_rangking_10 double(5,2) comment '10个季度排名',
+             season_ma8 double(12,3) comment '最近10个季度的净利润增长率的exma',
+             ssr_2 double(5,2) comment '两个季度排名',
+             ssr_8 double(5,2) comment '8个季度排名',
              UNIQUE KEY idx_uq_code (code,fin_year,fin_season,fin_type),
              INDEX idx_y_s (fin_year,fin_season)
         )ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -171,7 +172,6 @@ class DbCreator:
     '''
 
     def init_create_table(self):
-        pm = PandasToMysql();
         pm.create_table(DbCreator.__share__base_sql);
         pm.create_table(DbCreator.__share_data_day_sql);
         pm.create_table(DbCreator.__share_data_finance_sql);

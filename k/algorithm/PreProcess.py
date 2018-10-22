@@ -4,7 +4,9 @@ import  numpy as np;
 from k.util.DateUtil import DateUtil;
 import  pandas as pd;
 import  traceback;
-import  datetime
+import  datetime;
+from k.util.Logger import logger;
+
 
 class PreProcess:
 
@@ -13,10 +15,7 @@ class PreProcess:
         try:
           return (True,self.__process(df,start_data));
         except Exception as e:
-            print('pre process error');
-            print(e.__traceback__)
-            msg = traceback.format_exc()  # 方式1
-            print(msg)
+            logger.exception('pre process error');
             return (False,-1)
 
     def __process(self,df,start_date):

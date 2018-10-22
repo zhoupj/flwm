@@ -6,6 +6,7 @@ from k.util.StrUtil import  StrUtil;
 from k.util.DbCreator import DbCreator;
 import  json;
 import  pandas as pd;
+from k.util.Logger import logger,digest_log;
 
 post_headers_raw = b'''
 Accept:*/*
@@ -35,12 +36,12 @@ class FundsPuller(BasePuller):
         ctx = ss.get(url=url, headers=header_dict);
         if (ctx.content != None):
             f_data_list = json.loads(ctx.content)['zlcc_rz'];
-            print('funds date:',f_data_list)
+            logger.info('funds date:'+",".join(f_data_list))
 
         df=pd.DataFrame();
         for idx,f_d in enumerate(f_data_list):
             url = 'http://emweb.securities.eastmoney.com/PC_HSF10/ShareholderResearch/MainPositionsHodlerAjax?date='+ str(f_d)+'&code='+code_d;
-            print(url)
+            logger.debug(url)
             ctx = ss.get(url=url, headers=header_dict);
             df.loc[idx,'code']=code;
             df.loc[idx,'fin_year']=DateUtil.getYear(f_d);
@@ -51,6 +52,8 @@ class FundsPuller(BasePuller):
                 for d in data_list:
                     if(d['jglx']==u'基金'):
                         df.loc[idx,'fund_holding']=StrUtil.parse_field(d['zltgbl']);
+                    if(d['jglx']==u'社保基金'):
+                        df.loc[idx, 'sb_holding'] = StrUtil.parse_field(d['zltgbl']);
 
 
         return df;
@@ -60,5 +63,5 @@ class FundsPuller(BasePuller):
 
 if(__name__=='__main__'):
     fp=FundsPuller()
-    df =fp.pull('000691',start='2018-06-30',end='2018-06-30',to_mysql=True)
+    df =fp.pull('000691',start='2018-06-30',end='2018-06-30',to_mysql=False)
     print(df)

@@ -1,12 +1,10 @@
-from k.util.PandasToMysql import PandasToMysql;
-from k.util.DbCreator import DbCreator;
+from k.util.PandasToMysql import pm;
 import pandas as pd;
 
 class MySelection:
    #hk_holding_amount>3000
     @staticmethod
     def query_by_rps():
-        pm=PandasToMysql.instance();
         sql='''
         select trade_date,a.code,name,close,rps250,rps120,incOf250,fund_holding,hk_holding_amount,hk_holding_ratio,fluOf250d,fluOf80d,fluOf10d,diffToHigh250,close*c.totals as marketValue,industry from 
             (select * from share_data_day  

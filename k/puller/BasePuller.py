@@ -1,28 +1,24 @@
-import traceback;
-import datetime;
-import pandas as pd;
-from k.util.Logger import Logger;
-from k.util.PandasToMysql import PandasToMysql;
-from k.Config import Config;
+from k.util.Logger import logger,digest_log;
+from k.util.PandasToMysql import pm;
+
 
 class BasePuller:
 
     def pull(self,code:str,start:str,end:str,to_mysql=True,to_csv=False):
+        succ=True;
+        df=None;
         try:
-           Logger.log('pull data,code:',code,',start:',start,',end:',end);
            df= self._run(code,start,end);
-
            if(to_mysql):
-                print(df);
-                pm=PandasToMysql();
                 self._save_to_mysql(pm,df);
-                pm.close();
            if(to_csv):
                 self._save_to_csv(code,df)
-           return df;
-
         except Exception as e:
-            Logger.exception(self.__class__.__name__, code, str(start))
+            logger.exception('puller error')
+            succ=False;
+
+        digest_log.info('puller|%s|%s|%s|%s|%s|%s'%(self.__class__.__name__,code,start,end,str(to_mysql),succ))
+        return df;
 
     def _run(self,code,start,end):
         return;
