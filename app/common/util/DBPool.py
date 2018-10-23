@@ -40,7 +40,7 @@ class DBPool:
             return
         try:
             exist = [];
-            for i in df.index:
+            for i in df.index.values:
                 exist.append(self.__query_exist(table_name, df, i, primaryKeys))
     
             not_exist = list(map(lambda x: not x, exist))
@@ -80,11 +80,11 @@ class DBPool:
         sql = 'INSERT INTO ' + table_name + '(' + self.__parse_fields__(df.columns) + ') values ';
         chip = ''
         # for i in np.arange(df.shape[0]):
-        for i in df.index:
+        for i in df.index.values:
             chip = '(' + self.__parse_values__(df.loc[i, :].values) + ')';
             if (i != df.index[-1]):
                 chip = chip + ',';
-            sql = sql + chip;
+        sql = sql + chip;
         logger.debug('insert sql record count:' + str(df.shape[0]));
         self.__cursor.execute(sql);
         self.__conn.commit();
@@ -102,7 +102,7 @@ class DBPool:
 
             sql = '';
             # for i in np.arange(df.shape[0]):
-            for i in df.index:
+            for i in df.index.values:
                 chip = '';
                 for vi, val in enumerate(df.columns):
                     if (val not in primaryKeys):

@@ -7,26 +7,27 @@ from GlobalConfig import ConfigDict;
 class MyLogUtil:
 
    def __init__(self,PATH,debug,console):
+
         # 创建一个logger
-        digest_log=logging.getLogger('digest');
-        digest_log.setLevel(logging.INFO)
         d_handler =logging.handlers.TimedRotatingFileHandler(PATH+'digest.log', when='midnight', interval=1, backupCount=7,
                                                   atTime=datetime.time(0, 0, 0, 0))
         d_handler.setLevel(logging.INFO)
         d_handler.setFormatter(logging.Formatter("%(asctime)s|%(message)s"))
 
+        digest_log = logging.getLogger('digest');
+        digest_log.setLevel(logging.INFO)
+        digest_log.addHandler(d_handler)
+
         # 创建一个logger
-        suggest_log = logging.getLogger('suggest');
-        suggest_log. setLevel(logging.INFO)
+
         s_handler = logging.handlers.TimedRotatingFileHandler(PATH + 'suggest.log', when='midnight', interval=1,
                                                               backupCount=7,
                                                               atTime=datetime.time(0, 0, 0, 0))
+        suggest_log = logging.getLogger('suggest');
+        suggest_log.setLevel(logging.INFO)
         suggest_log.addHandler(s_handler);
 
-
-        d_handler.setLevel(logging.INFO)
-        d_handler.setFormatter(logging.Formatter("%(asctime)s|%(message)s"))
-
+        # 创建一个logger
         logger = logging.getLogger('mylogger')
         if(debug=='true'):
             logger.setLevel(logging.DEBUG)
@@ -46,9 +47,7 @@ class MyLogUtil:
         logger.addHandler(rf_handler)
         logger.addHandler(f_handler)
 
-        digest_log.addHandler(d_handler)
         digest_log.addHandler(rf_handler)
-
         if(console=='true'):
             logger.addHandler(sh)
             digest_log.addHandler(sh)
