@@ -19,7 +19,7 @@ class BaseHandler(RequestHandler):
            obj= self.post2(args,kwargs);
            self.write(Result.succ(obj))
         except AppException as ae:
-            logger.error('business error,code:%s,err:%s'%(args[0][0],args[0][1]))
+            logger.error('business error,code:%s,err:%s'%(ae.args[0][0],ae.args[0][1]))
             self.write(Result.fail2(ae.args[0]))
 
         except Exception as e:
@@ -39,3 +39,10 @@ class BaseHandler(RequestHandler):
 
     def get2(self, *args, **kwargs):
         self.write('网路异常')
+
+if __name__=='__main__':
+    try:
+        raise AppException(Result.ERROR_SYS);
+    except AppException as b:
+        args=b.args;
+        print('business error,code:%s,err:%s'%(args[0][0],args[0][1]))
