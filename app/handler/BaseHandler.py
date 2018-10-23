@@ -11,7 +11,7 @@ class BaseHandler(RequestHandler):
 
     def post(self, *args, **kwargs):
         try:
-            self._post2(args,kwargs);
+            self.post2(args,kwargs);
         except Exception as e:
             logger.exception('fail:'+self.__class__.__name__);
             self.write(Result.fail2(Result.ERROR_SYS))

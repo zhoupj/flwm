@@ -37,7 +37,7 @@ class Result:
     @staticmethod
     def succ_df(df):
         data='';
-        if(df==None or df.empty):
+        if(df.empty):
             data='';
         else:
             data=df.to_json(orient='records');
