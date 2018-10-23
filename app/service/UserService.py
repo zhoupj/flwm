@@ -53,13 +53,13 @@ class UserService:
     def query(self,open_id):
         df = dbPool.query_any('select * from %s where open_id="%s"' % (UserService.__TBNAME, open_id));
         if(df.empty):
-            return None;
+            return df;
         return self.__if_member_expire(df);
 
     def query_by_id(self, id):
         df = dbPool.query_any('select * from %s where id="%s"' % (UserService.__TBNAME, id));
         if(df.empty):
-            return None;
+            return df;
         return self.__if_member_expire(df);
 
     def __if_member_expire(self, df):

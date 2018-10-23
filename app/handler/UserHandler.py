@@ -27,7 +27,7 @@ class Login(BaseHandler):
 
         code = self.get_argument('code');
         df = US.query(code);
-        if (df == None):
+        if (df.empty):
             self.write(Result.fail2(Result.ERROR_NOT_LOGIN))
         else:
             US.update_login_days(df.loc[0, 'id']);
