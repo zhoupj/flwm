@@ -1,4 +1,5 @@
 import datetime;
+from app.common.util.JsonUtil import JsonUtil;
 
 import pandas as pd;
 
@@ -18,10 +19,11 @@ from app.common.util.DBPool import dbPool;
 class MemberService:
 
     def query_all(self):
-        return dbPool.query('share_activity',where='act_state=1')
+        df= dbPool.query('share_activity',where='act_state=1')
+        return JsonUtil.getList(df)
 
     def query_by_id(self,id):
-        return dbPool.query('share_activity',where='id=%d'%(id));
+        return  JsonUtil.getDict(dbPool.query('share_activity',where='id=%d'%(id)));
 
     def save_activity(self,df):
         dbPool.save('share_activity',df,primaryKeys=['act_name']);
@@ -29,7 +31,6 @@ class MemberService:
     def get_deadline_by_id(self,act_id):
         act_df = dbPool.query_any('select * from share_activity where id=%d' % (act_id));
         act_code = act_df.loc[0, 'act_code'];
-
         today=datetime.datetime.now();
         dl=today;
 
@@ -41,7 +42,6 @@ class MemberService:
             dl = today + datetime.timedelta(days=121);
         elif (act_code == 'year_v'):
             dl = today + datetime.timedelta(days=365);
-
         return dl.strftime('%Y-%m-%d');
 MS=MemberService();
 
@@ -76,4 +76,4 @@ if(__name__=='__main__'):
     df.loc[idx, 'act_desc'] = '限时五折';
     df.loc[idx, 'amount'] = '42900';
 
-    MAS.save_activity(df)
+    MS.save_activity(df)

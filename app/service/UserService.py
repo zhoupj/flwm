@@ -1,8 +1,12 @@
 from app.common.util.DBPool import dbPool;
+from app.common.Result import Result;
+from app.common.AppException import AppException;
 from app.common.util.LogUtil import digest_log,logger;
 from app.service.MemberService import MS;
+from app.common.util.JsonUtil import JsonUtil;
 import  pandas as pd;
 import datetime
+
 
 
 '''
@@ -28,8 +32,7 @@ create table if not exists share_buy_record(
 
 class UserService:
 
-
-
+    __date_col=['member_deadline','last_login_time','this_login_time']
     __TBNAME='share_user';
     __RECORD='share_buy_record';
 
@@ -43,6 +46,8 @@ class UserService:
             df.loc[0,'last_login_time']=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             df.loc[0,'login_days']=1;
             dbPool.insert(UserService.__TBNAME, df);
+        else:
+            raise AppException(Result.ERROR_EXIST)
 
     def __is_exist(self,open_id):
         df=dbPool.query_any('select * from %s where open_id="%s"'% (UserService.__TBNAME,open_id));
@@ -53,13 +58,13 @@ class UserService:
     def query(self,open_id):
         df = dbPool.query_any('select * from %s where open_id="%s"' % (UserService.__TBNAME, open_id));
         if(df.empty):
-            return df;
+            return {};
         return self.__if_member_expire(df);
 
     def query_by_id(self, id):
         df = dbPool.query_any('select * from %s where id="%s"' % (UserService.__TBNAME, id));
         if(df.empty):
-            return df;
+            return {};
         return self.__if_member_expire(df);
 
     def __if_member_expire(self, df):
@@ -73,13 +78,12 @@ class UserService:
             df.loc[0, 'is_member'] = 0;
             dbPool.execute(
                 ['update % set is_member=0 and member_deadline=NULL where id=%d' % (UserService.__TBNAME, id)])
-        return df;
+        return JsonUtil.getDict(df,date_col=UserService.__date_col);
 
     def query_member_detail(self,id):
         buy_df = dbPool.query_any('select * from %s where user_id=%d order by id desc limit 1' % (UserService.__RECORD, id));
         act_id=buy_df.loc[0,'act_id'];
-        act_df=MS.query_by_id(act_id);
-        return act_df;
+        return MS.query_by_id(act_id);
 
     def update_login_days(self,id):
         df = dbPool.query_any('select id,login_days,last_login_time from %s where id="%d"' % (UserService.__TBNAME, id));
@@ -112,12 +116,13 @@ if(__name__=='__main__'):
     df=MS.query_all();
     print(df);
     us=UserService();
-    us.create('open_id_test','周来周');
-    us_df=us.query('open_id_test');
-    print(us_df);
-    id=us_df.loc[0,'id'];
+    #us.create('open_id_test','周来周');
+    user=us.query('open_id_test');
+    print('--user---')
+    id=user['id']
     us.update_last_login_time(id);
     us.update_login_days(id)
     us.buy_vip(id,1,True)
-    us_df=us.query('open_id_test');
-    print(us_df);
+    user=us.query('open_id_test');
+    print('user---')
+    print(user);

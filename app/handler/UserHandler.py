@@ -4,7 +4,9 @@ from app.handler.BaseHandler import BaseHandler;
 from app.common.Result import Result;
 from app.service.UserService import US;
 from app.service.MemberService import MS;
+from app.common.AppException import AppException;
 import pandas as pd;
+import tornado;
 
 
 class Register(BaseHandler):
@@ -18,35 +20,31 @@ class Register(BaseHandler):
         # TODO
         open_id = code;
         US.create(open_id, name);
-        df = US.query(open_id);
-        self.write(Result.succ_df(df))
+        return US.query(open_id);
+
 
 
 class Login(BaseHandler):
     def post2(self, *args, **kwargs):
-
         code = self.get_argument('code');
-        df = US.query(code);
-        if (df.empty):
-            self.write(Result.fail2(Result.ERROR_NOT_LOGIN))
+        user = US.query(code);
+        if (user):
+            US.update_login_days(user['id']);
+            return user;
         else:
-            US.update_login_days(df.loc[0, 'id']);
-            self.write(Result.succ_df(df))
-
+            raise AppException(Result.ERROR_NOT_LOGIN);
 
 class Quit(BaseHandler):
     def post2(self, *args, **kwargs):
         id = int(self.get_argument('user_id'));
         df = US.query_by_id(id)
         US.update_last_login_time(id);
-        self.write(Result.succ('udpate sucess'));
+        return 'succ';
 
 
 class MemberActivity(BaseHandler):
     def post2(self, *args, **kwargs):
-        df = MS.query_all();
-        self.write(Result.succ(df.to_json(orient='records')));
-
+        return MS.query_all();
 
 class BuyMember(BaseHandler):
     def post2(self, *args, **kwargs):
@@ -54,16 +52,16 @@ class BuyMember(BaseHandler):
         act_id = int(self.get_argument('act_id'));
         df = US.query_by_id(user_id);
         if (df.loc[0, 'is_member'] == 1):
-            self.write(Result.fail2(Result.CREATE_MEMBER_FAIL))
-            return;
+            raise AppException(Result.CREATE_MEMBER_FAIL)
         # 充钱。。。。
         succ = True;
         US.buy_vip(user_id, act_id, succ);
-        df = US.query_by_id(user_id);
-        self.write(Result.succ(df.to_json(orient='records')))
+        return US.query_by_id(user_id);
+
 
 
 class Suggest(BaseHandler):
+
     def post2(self, *args, **kwargs):
         txt = self.get_argument('txt');
         user_id = self.get_argument('user_id');

@@ -1,4 +1,5 @@
 from app.common.util.DBPool import dbPool;
+from app.common.util.JsonUtil import JsonUtil;
 import  pandas as pd;
 import random;
 import datetime
@@ -40,7 +41,7 @@ class ArticleService:
         df= dbPool.query_any('select  id,publish_time,url,title,ctx,visit_count from %s where id=%d'%(TB_NAME,id));
         df.loc[0,'visit_count']=df.loc[0,'visit_count']+1;
         dbPool.update(TB_NAME,df[['id','visit_count']],primaryKeys=['id'])
-        return df;
+        return JsonUtil.getDict(df);
 
 
     def query_list(self,pageNo=0,pageSize=5):
@@ -49,8 +50,8 @@ class ArticleService:
         if(pageSize<=0):
             pageSize=5;
         start=pageNo*pageSize;
-        return dbPool.query_any('select id,publish_time,url,title,digest,visit_count from %s order by publish_time desc limit %d,%d'%(TB_NAME,start,pageSize));
-
+        df= dbPool.query_any('select id,publish_time,url,title,digest,visit_count from %s order by publish_time desc limit %d,%d'%(TB_NAME,start,pageSize));
+        return JsonUtil.getList(df)
 AS=ArticleService()
 if(__name__=='__main__'):
     url='https://finance.sina.com.cn/stock/jsy/2018-10-22/doc-ifxeuwws6920051.shtml';

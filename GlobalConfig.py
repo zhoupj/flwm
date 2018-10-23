@@ -3,10 +3,9 @@
 
 
 ConfigDict={}
-root_path='/Users/zhoupj/Documents/svncode/flwm/';
 
-with open(root_path+'./config.txt', 'r') as f1:
-    lst = f1.readlines()
+f1= open('/Users/zhoupj/Documents/svncode/flwm/config.txt', 'r')
+lst = f1.readlines()
 for i in range(0, len(lst)):
     if('#' in lst[i] or lst[i].strip()==''):
         continue;
