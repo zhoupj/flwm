@@ -24,6 +24,7 @@ class MultiBase:
            logger.exception('muliti base error')
 
         digest_log.info('Alg-mlt|%s|%s|%s'%(self.__class__.__name__,dt,succ))
+        return succ;
 
     def _process(self, df):
         return;

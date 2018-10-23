@@ -18,7 +18,7 @@ class BasePuller:
             succ=False;
 
         digest_log.info('puller|%s|%s|%s|%s|%s|%s'%(self.__class__.__name__,code,start,end,str(to_mysql),succ))
-        return df;
+        return succ;
 
     def _run(self,code,start,end):
         return;

@@ -41,7 +41,6 @@ class FinManager:
         nms = NetProfitSort();
         nms8= NetProfitSort8();
         for dt in['2017-09-30','2017-12-31','2018-03-31','2018-06-30']:
-
             nms.run(dt,to_mysql=True,type=1)
             nms8.run(dt,to_mysql=True,type=1)
 

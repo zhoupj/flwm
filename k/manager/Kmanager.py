@@ -20,14 +20,18 @@ from k.util.DbCreator import DbCreator;
 from k.util.Logger import logger;
 from k.util.PandasToMysql import pm;
 from k.util.PoolManager import PoolManger;
+import  pandas as pd;
+from GlobalConfig import ConfigDict;
+import  datetime;
+
 
 THREAD_NUM=1;
 
 class KManager:
 
+    __file_name='kmanger_'+datetime.datetime.now().strftime('%Y%m%d%H%M%S')+'.csv';
     @staticmethod
     def pull_data(start_date=None):
-        plm = PoolManger(THREAD_NUM);
 
         shp = SharePuller();
         df = shp.query_from_mysql();
@@ -35,24 +39,29 @@ class KManager:
         now = datetime.datetime.now()
         end = now.strftime('%Y-%m-%d');
 
+        dict={};
+        # 拉取数据&保存到DB
+        kp = Kpuller();
         # 获取基本数据，按列表计算
         for index, row in df.iterrows():
             code = row['code'];
             start = str(row['timeToMarket']);
             if (start_date != None and start < start_date):
                 start = start_date;
-            # 拉取数据&保存到DB
-            kp = Kpuller();
-            kp.pull(code, start, end);
+            dict[code]=kp.pull(code, start, end);
+            time.sleep(1.5)
 
-        plm.close();
+
+        KManager.to_csv(dict,'pd');
+
 
         #获取港资数据
+        dict={}
         hkp = HkHoldPuller();
         for dt in DateUtil.getDateSeq(start_date):
-            hkp.pull(dt);
+            dict[dt]=hkp.pull(dt);
             time.sleep(3)
-
+        KManager.to_csv(dict, 'ph');
 
     @staticmethod
     def count_kpi(start_date,s=True,m=True):
@@ -60,31 +69,35 @@ class KManager:
         df = shp.query_from_mysql();
 
         end = datetime.datetime.now().strftime('%Y-%m-%d');
-        dict = {};
+
 
         # ================================
         ## 单指标计算
         # ================================
         if(s):
+            dict = {};
             for index, row in df.iterrows():
                 code = row['code'];
                 start = str(row['timeToMarket']);
                 if (start_date != None and start < start_date):
                     start = start_date;
                     KManager.kpi_s(code, start_date, pm, dict)
-            print('===kpi result======')
-            print(dict)
+
+            KManager.to_csv(dict, 'ks');
+
 
         # ================================
         ## 多指标计算
         # ================================
         if(m):
+            dict={}
             if (start_date == None):
                 start_date = end;
-                KManager.kpi_m(start_date, pm);
+                dict[start_date]=KManager.kpi_m(start_date, pm);
             elif (start_date <= end):
                 for dt in DateUtil.getDateSeq(start_date):
-                    KManager.kpi_m(dt, pm);
+                   dict[dt]=KManager.kpi_m(dt, pm);
+            KManager.to_csv(dict, 'km');
 
     @staticmethod
     def kpi_s(code,start_date,pm,dict):
@@ -106,9 +119,22 @@ class KManager:
         mdf=mdf[[Config.id,Config.incOfOneYear,Config.incOfHalfYear,Config.incOf50d]]
         mdf=mdf.dropna()
         rps = Rps();
-        rps.run(mdf,start_date,True);
+        return rps.run(mdf,start_date,True);
 
-
+    @staticmethod
+    def to_csv(dict,type):
+        path=ConfigDict['root_path'];
+        fn=path+KManager.__file_name;
+        df = pd.DataFrame();
+        i = 0;
+        for k in dict.keys():
+            if (dict[k] == False):
+                df.loc[i, 'type']=type;
+                df.loc[i, 'code'] = k;
+                i=i+1;
+        if(df.empty):
+            return
+        df.to_csv(fn,mode='a',header=False);
 #main
 if (__name__ == '__main__'):
     #pm = PandasToMysql();
