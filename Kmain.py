@@ -88,6 +88,9 @@ def main(argv):
             elif (df.loc[i, 'type'] == 'km'):
                 K_RETRY['km'].append(df.loc[i, 'code']);
 
+    if(not os.path.exists(ConfigDict['k_fail_log'])):
+        new_df = pd.DataFrame(data=None, columns=['type', 'code']);
+        new_df.to_csv(ConfigDict['k_fail_log'], mode='w')
 
         print(K_RETRY)
     if (create_db):
