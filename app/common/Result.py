@@ -5,9 +5,11 @@ import json;
 class Result:
 
     SUCC=['1000','成功'];
+    UKNOWN=['9001','未知异常']
 
     ERROR_NOT_LOGIN=['1001','未注册'],
     ERROR_EXIST = ['1002', '已经注册'];
+
 
     ERROR_URL=['2001','访问路径不存在'],
     ERROR_SYS=['2002','系统繁忙请稍后再试']

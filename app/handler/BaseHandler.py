@@ -19,10 +19,10 @@ class BaseHandler(RequestHandler):
            obj= self.post2(args,kwargs);
            self.write(Result.succ(obj))
         except AppException as ae:
-            logger.error('business error,code:%s,err:%s'%(ae.args[0][0],ae.args[0][1]))
-            self.write(Result.fail2(ae.args[0]))
+            logger.error('business error,code:%s,err:%s'%(ae.code,ae.err))
+            self.write(Result.fail2(ae.info))
 
-        except Exception as e:
+        except BaseException as e:
             logger.exception('fail:'+self.__class__.__name__);
             self.write(Result.fail2(Result.ERROR_SYS))
 
@@ -33,7 +33,10 @@ class BaseHandler(RequestHandler):
     def get(self, *args, **kwargs):
         try:
             self.get2(args, kwargs)
-        except Exception as e:
+        except AppException as ae:
+            logger.error('business error,code:%s,err:%s'%(ae.code,ae.err))
+            self.write(Result.fail2(ae.info))
+        except BaseException as e:
             logger.exception('fail:' + self.__class__.__name__);
             self.write(Result.fail2(Result.ERROR_SYS))
 
