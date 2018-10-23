@@ -24,14 +24,12 @@ import  pandas as pd;
 from GlobalConfig import ConfigDict;
 import  datetime;
 
-
 THREAD_NUM=1;
 
 class KManager:
 
-    __file_name='kmanger_'+datetime.datetime.now().strftime('%Y%m%d%H%M%S')+'.csv';
     @staticmethod
-    def pull_data(start_date=None):
+    def pull_data(start_date=None,retry=False,retryDict=None):
 
         shp = SharePuller();
         df = shp.query_from_mysql();
@@ -46,6 +44,10 @@ class KManager:
         for index, row in df.iterrows():
             code = row['code'];
             start = str(row['timeToMarket']);
+
+            if (retry and code not in retryDict['pd']):
+                continue;
+
             if (start_date != None and start < start_date):
                 start = start_date;
             dict[code]=kp.pull(code, start, end);
@@ -59,12 +61,14 @@ class KManager:
         dict={}
         hkp = HkHoldPuller();
         for dt in DateUtil.getDateSeq(start_date):
+            if (retry and code not in retryDict['ph']):
+                continue;
             dict[dt]=hkp.pull(dt);
             time.sleep(3)
         KManager.to_csv(dict, 'ph');
 
     @staticmethod
-    def count_kpi(start_date,s=True,m=True):
+    def count_kpi(start_date,s=True,m=True,retry=False,retryDict=None):
         shp = SharePuller();
         df = shp.query_from_mysql();
 
@@ -79,6 +83,8 @@ class KManager:
             for index, row in df.iterrows():
                 code = row['code'];
                 start = str(row['timeToMarket']);
+                if (retry and code not in retryDict['ks']):
+                    continue;
                 if (start_date != None and start < start_date):
                     start = start_date;
                     KManager.kpi_s(code, start_date, pm, dict)
@@ -96,7 +102,9 @@ class KManager:
                 dict[start_date]=KManager.kpi_m(start_date, pm);
             elif (start_date <= end):
                 for dt in DateUtil.getDateSeq(start_date):
-                   dict[dt]=KManager.kpi_m(dt, pm);
+                    if (retry and code not in retryDict['km']):
+                            continue;
+                    dict[dt]=KManager.kpi_m(dt, pm);
             KManager.to_csv(dict, 'km');
 
     @staticmethod
@@ -123,8 +131,7 @@ class KManager:
 
     @staticmethod
     def to_csv(dict,type):
-        path=ConfigDict['root_path'];
-        fn=path+KManager.__file_name;
+        print(dict)
         df = pd.DataFrame();
         i = 0;
         for k in dict.keys():
@@ -134,7 +141,7 @@ class KManager:
                 i=i+1;
         if(df.empty):
             return
-        df.to_csv(fn,mode='a',header=False);
+        df.to_csv(ConfigDict['k_fail_log'],mode='a',header=False);
 #main
 if (__name__ == '__main__'):
     #pm = PandasToMysql();

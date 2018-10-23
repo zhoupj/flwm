@@ -1,9 +1,17 @@
-from k.util.DbCreator import DbCreator;
-from k.manager.Kmanager import KManager;
-from k.manager.FinManager import FinManager;
-from k.puller.SharePuller import SharePuller;
 import sys, getopt
 import datetime;
+import pandas as pd;
+import  numpy as np;
+import os;
+
+
+K_RETRY={
+  'pd':[],
+  'ph':[],
+  'ks':[],
+  'km':[]
+}
+
 
 
 def main(argv):
@@ -13,17 +21,27 @@ def main(argv):
     pull_f_data = False;
     kpi_k = False;
     kpi_f = False;
+    retry = False;
     start_date = datetime.datetime.now().strftime('%Y-%m-%d');
 
     try:
-        opts, args = getopt.getopt(argv, "hcfks:", ["pl", "pk", 'pf', 'sdate='])
+        opts, args = getopt.getopt(argv, "hcfkrs:", ["pl", "pk", 'pf', 'sdate='])
     except getopt.GetoptError:
-        print('Kmain.py -c --pl --pk --pf -f -k -s <date> --sdate=<date>')
+        print('Kmain.py -c --pl --pk --pf -f -k -s <date>  -r')
         sys.exit(2)
 
     for opt, arg in opts:
         if opt == '-h':
-            print('Kmain.py -c --pl --pk --pf -f -k -s <date> --sdate=<date>')
+            print(''' 
+            -c 创建db
+            --pl 拉列表
+            --pk 拉k线数据
+            --pf 拉财务数据
+            -f 计算财务数据指标
+            -k 计算k线数据指标
+            -s <date> 开始拉k线数据和计算k线数据指标日期，格式:2011-01-01
+            -r 重试线数据和计算k线数失败的，
+            ''')
             sys.exit()
         elif opt == '-c':
             create_db = True;
@@ -39,7 +57,39 @@ def main(argv):
             kpi_f = True;
         elif opt in ("-s", "--sdate"):
             start_date = arg
+        elif opt == '-r':
+            retry = True;
 
+    from k.util.DbCreator import DbCreator;
+    from k.manager.Kmanager import KManager;
+    from k.manager.FinManager import FinManager;
+    from k.puller.SharePuller import SharePuller;
+    from GlobalConfig import ConfigDict;
+
+    if (retry):
+
+        df=pd.DataFrame();
+        if os.path.exists(ConfigDict['k_fail_log']):
+            df = pd.read_csv(ConfigDict['k_fail_log'], index_col=0,dtype={'code':np.str,'type':np.str});
+            print(df)
+            if os.path.exists(ConfigDict['k_fail_log'] + '.pre'):
+                 os.remove(ConfigDict['k_fail_log'] + '.pre')
+            os.rename(ConfigDict['k_fail_log'],ConfigDict['k_fail_log'] + '.pre')
+            new_df = pd.DataFrame(data=None, columns=['type', 'code']);
+            new_df.to_csv(ConfigDict['k_fail_log'], mode='w')
+
+        for i in range(df.shape[0]):
+            if (df.loc[i, 'type'] == 'pd'):
+                K_RETRY['pd'].append(df.loc[i, 'code']);
+            elif (df.loc[i, 'type'] == 'ph'):
+                K_RETRY['ph'].append(df.loc[i, 'code']);
+            elif (df.loc[i, 'type'] == 'ks'):
+                K_RETRY['ks'].append(df.loc[i, 'code']);
+            elif (df.loc[i, 'type'] == 'km'):
+                K_RETRY['km'].append(df.loc[i, 'code']);
+
+
+        print(K_RETRY)
     if (create_db):
         dc = DbCreator()
         dc.init_create_table();
@@ -49,16 +99,18 @@ def main(argv):
         sp.pull();
 
     if (pull_k_data):
-        KManager.pull_data(start_date);
+        KManager.pull_data(start_date,retry=retry,retryDict=K_RETRY);
     if (kpi_k):
-        KManager.count_kpi(start_date);
+        KManager.count_kpi(start_date,retry=retry,retryDict=K_RETRY);
 
     if (pull_f_data):
         FinManager.pull_data();
     if (kpi_f):
         FinManager.count_kpi();
 
+
     print('finish OK')
+
 
 if __name__ == "__main__":
     main(sys.argv[1:])

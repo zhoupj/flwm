@@ -22,7 +22,7 @@ class TBasePuller:
             logger.exception('tbase puller error')
             succ=False;
         digest_log.info('t-puller|%s|%s|%s|%s' % (self.__class__.__name__, dt,str(to_mysql),succ))
-        return df;
+        return succ;
     def _save_to_mysql(self, pm,df):
         return
 

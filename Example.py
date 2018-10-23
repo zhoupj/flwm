@@ -2,7 +2,7 @@
 import pandas as pd
 import json
 from app.common.AppException import AppException;
-
+import  os
 
 df=pd.DataFrame(data={'Num':[1,2,3],'char':['a','我','c']})
 print(df.columns.values)
@@ -50,3 +50,5 @@ except AppException as b:
 print('%s|%s'%('a','b'))
 
 print(df)
+if  os.path.exists('a.txt'):
+    os.remove('a.txt')

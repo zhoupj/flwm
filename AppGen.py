@@ -17,7 +17,7 @@ def main(argv):
 
     for opt, arg in opts:
         if opt == '-h':
-            print('Kmain.py -g')
+            print('-g 生成文章数据')
             sys.exit()
         elif opt == '-g':
             gen_art=True;

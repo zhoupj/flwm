@@ -14,6 +14,9 @@ k_to_mysql=false
 app_log_path=/Users/zhoupj/Documents/svncode/flwm/app/log/
 app_to_mysql=false
 
+#fail k log
+k_fail_log=/Users/zhoupj/Documents/svncode/flwm/k-fail.csv
+
 #debug
 debug=true
 console=true
