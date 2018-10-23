@@ -157,19 +157,18 @@ class DbCreator:
         
     '''
 
-    __share_user_sel ='''
+    __share_user_sel_sql ='''
         create table if not exists share_user_share_sel(
              id int primary key auto_increment,
              user_id int not null,
-             share_code varchar(6) not null ,
+             share_code varchar(6) not null,
              add_time datetime not null,
              inc_flu  double(5,2) comment '增长幅度',
-             group int comment '股票分组:1 观察，2候选，3 持有，4 淘汰',
+             s_group int comment '股票分组:1 观察2候选3 持有4 淘汰',
              tag varchar(500) comment '标记',
-             feature text ,
-             UNIQUE KEY idx_uq_code (user_id,share_code,group)
-        )ENGINE=InnoDB DEFAULT CHARSET=utf8;
-    '''
+             feature text,
+             UNIQUE KEY idx_uq_code (user_id,share_code,s_group)
+        )ENGINE=InnoDB DEFAULT CHARSET=utf8;'''
 
     __share_article_sql = '''
            create table if not exists share_article(
@@ -181,7 +180,7 @@ class DbCreator:
                 ctx text ,
                 visit_count int default 0,
                 comment_count int default 0,
-                feature text ,
+                feature text
            )ENGINE=InnoDB DEFAULT CHARSET=utf8;
        '''
 
@@ -190,6 +189,7 @@ class DbCreator:
         pm.create_table(DbCreator.__share_data_day_sql);
         pm.create_table(DbCreator.__share_data_finance_sql);
         pm.create_table(DbCreator.__share_user_sql);
+        pm.create_table(DbCreator.__share_user_sel_sql);
         pm.create_table(DbCreator.__share_article_sql);
         pm.create_table(DbCreator.__share_buy_record);
         pm.create_table(DbCreator.__share_member_activity);
