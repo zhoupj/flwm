@@ -7,17 +7,15 @@ from app.service.ArticleService import AS;
 
 class AtcList(BaseHandler):
 
-    def post2(self, *args, **kwargs):
-        pageNo = self.get_argument('pn');
-        size = self.get_argument('sz');
+    def post2(self,dict):
+        pageNo = dict['pn'];
+        size = dict['sz'];
         return AS.query_list(int(pageNo),int(size));
-
-
 
 class AtcDetail(BaseHandler):
 
-    def post2(self, *args, **kwargs):
-        id = self.get_argument('id');
+    def post2(self, dict):
+        id = dict['id'];
         return AS.query_detail(int(id))
 
 

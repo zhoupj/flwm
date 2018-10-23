@@ -67,10 +67,17 @@ class UserService:
             return {};
         return self.__if_member_expire(df);
 
+    def is_member(self,id):
+        user=self.query_by_id(id);
+        if(user and user['is_member']==1):
+            return True
+        else:
+            return False;
+
+
     def __if_member_expire(self, df):
         id = df.loc[0, 'id']
         deadline = df.loc[0, 'member_deadline'];
-        print(deadline)
 
         today = datetime.datetime.now().strftime('%Y-%m-%d');
         if (deadline!=None and today > str(deadline)):

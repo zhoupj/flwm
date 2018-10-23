@@ -1,7 +1,8 @@
 from app.common.Result import Result
 class AppException(BaseException):
      def __init__(self, tuple): # real signature unknown
-        lst=tuple[0]
+
+        lst=tuple
         if(lst):
             print(lst);
             self.code=lst[0];

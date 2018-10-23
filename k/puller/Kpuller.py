@@ -9,6 +9,7 @@ from k.Config import Config;
 from k.puller.BasePuller import BasePuller;
 from k.util.DbCreator import DbCreator;
 
+bs.login();
 
 class Kpuller(BasePuller):
     def _run(self, code, start, end):
@@ -38,7 +39,7 @@ class Kpuller(BasePuller):
 
     # frequency：数据类型，默认为d，日k线；d=日k线、w=周、m=月
     def __parse_baostock_data(self, code, start, end, freq):
-        bs.login();
+
 
         '''
           虽然价格都进行了复权，但是成交量和换手率都没有前复权(tushare和baostock都没做)，同花顺也是， 东方财富做了。
@@ -74,7 +75,6 @@ class Kpuller(BasePuller):
             # 获取一条记录，将记录合并在一起
             data_list.append(rs.get_row_data())
         result = pd.DataFrame(data_list, columns=rs.fields)
-        bs.logout()
         return result;
 
     # pull 上市日期  到2011-01-01的数据 （执行一次）
