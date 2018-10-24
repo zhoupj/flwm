@@ -3,6 +3,7 @@ import pandas as pd
 import json
 from app.common.AppException import AppException;
 import  os
+import numpy as np;
 
 df=pd.DataFrame(data={'Num':[1,2,3],'char':['a','我','c']})
 print(df.columns.values)
@@ -52,3 +53,24 @@ print('%s|%s'%('a','b'))
 print(df)
 if  os.path.exists('a.txt'):
     os.remove('a.txt')
+
+
+a=' ';
+b={};
+c=[]
+d=None
+e=()
+f=0.0
+
+if(a):
+    print ('a');
+if(b):
+    print ('b');
+if(c):
+    print ('c');
+if(d):
+    print ('d')
+if(e):
+    print ('e');
+if(f):
+    print ('f');

@@ -87,12 +87,13 @@ def main(argv):
                 K_RETRY['ks'].append(df.loc[i, 'code']);
             elif (df.loc[i, 'type'] == 'km'):
                 K_RETRY['km'].append(df.loc[i, 'code']);
+        print(K_RETRY)
 
     if(not os.path.exists(ConfigDict['k_fail_log'])):
         new_df = pd.DataFrame(data=None, columns=['type', 'code']);
         new_df.to_csv(ConfigDict['k_fail_log'], mode='w')
 
-        print(K_RETRY)
+
     if (create_db):
         dc = DbCreator()
         dc.init_create_table();

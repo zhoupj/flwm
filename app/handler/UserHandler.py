@@ -29,7 +29,6 @@ class Register(BaseHandler):
 class Login(BaseHandler):
     def post2(self,dict):
         code = dict['code'];
-        print('------------'+code)
         user = US.query(code);
         if (user):
             US.update_login_days(user['id']);

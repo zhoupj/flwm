@@ -10,17 +10,6 @@ from GlobalConfig import ConfigDict;
 class DBPool:
 
 
-    @staticmethod
-    # 目前未有锁，会有问题
-    def instance():
-       #https://www.cnblogs.com/huchong/p/8244279.html
-        if (DBPool.__instance != None):
-            return DBPool.__instance
-
-        pm = DBPool();
-        DBPool.__instance = pm;
-        return pm;
-
     def __init__(self, host=ConfigDict['ip'],user=ConfigDict['user'],password=ConfigDict['password'],db_name=ConfigDict['db_name']):
 
         try:
@@ -96,7 +85,7 @@ class DBPool:
             return
 
         try:
-            if (primaryKeys == '' or primaryKeys == None):
+            if (primaryKeys == '' or primaryKeys is None):
                 raise Exception('primaryKeys is None');
             sql_prefix = 'update ' + table_name + ' set ';
 
@@ -177,6 +166,17 @@ class DBPool:
         if (index_col != None):
             df.set_index(index_col, inplace=True)
         return df;
+
+
+    def query_by_req(self,tb_name:str,req_dict:[],resp_lst=None):
+
+        column='*';
+        if(resp_lst):
+           column=' '.join(resp_lst)+' ';
+        cond
+
+
+
 
     def execute(self,sqls):
         try:
