@@ -29,7 +29,7 @@ THREAD_NUM=1;
 class KManager:
 
     @staticmethod
-    def pull_data(start_date=None,retry=False,retryDict=None):
+    def pull_data(start_date=None,start_code=None,retry=False,retryDict=None):
 
         shp = SharePuller();
         df = shp.query_from_mysql();
@@ -44,6 +44,9 @@ class KManager:
         for index, row in df.iterrows():
             code = row['code'];
             start = str(row['timeToMarket']);
+
+            if(start_code and code<start_code):
+                continue;
 
             if (retry and code not in retryDict['pd']):
                 continue;
@@ -68,7 +71,7 @@ class KManager:
         KManager.to_csv(dict, 'ph');
 
     @staticmethod
-    def count_kpi(start_date,s=True,m=True,retry=False,retryDict=None):
+    def count_kpi(start_date,s=True,m=True,start_code=None,retry=False,retryDict=None):
         shp = SharePuller();
         df = shp.query_from_mysql();
 
@@ -83,6 +86,9 @@ class KManager:
             for index, row in df.iterrows():
                 code = row['code'];
                 start = str(row['timeToMarket']);
+                if (start_code and code < start_code):
+                    continue;
+
                 if (retry and code not in retryDict['ks']):
                     continue;
                 if (start_date != None and start < start_date):
@@ -136,6 +142,7 @@ class KManager:
         i = 0;
         for k in dict.keys():
             if (dict[k] == False):
+                df.loc[i,'date']=DateUtil.getLongFormat();
                 df.loc[i, 'type']=type;
                 df.loc[i, 'code'] = k;
                 i=i+1;

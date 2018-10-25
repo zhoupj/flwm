@@ -7,5 +7,6 @@ from app.common.util.DBPool import dbPool;
 class SearchService():
 
     def query_list(self,req_dict):
+        pass
 
 

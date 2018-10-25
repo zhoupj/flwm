@@ -4,6 +4,16 @@ FORMAT='%Y-%m-%d';
 class DateUtil:
 
     @staticmethod
+    def getLongFormat():
+        return '%Y-%m-%d %H:%M:%S';
+    @staticmethod
+    def getShortFromat():
+        return FORMAT;
+    @staticmethod
+    def getNewFormat():
+        return '%Y%m%d%H%M%S';
+
+    @staticmethod
     def getDateSeq(start:str):
 
         seq=[];

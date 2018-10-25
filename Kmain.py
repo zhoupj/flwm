@@ -12,6 +12,19 @@ K_RETRY={
   'km':[]
 }
 
+def print_help():
+    print('python Kmain.py <options>[as follows]')
+    print(''' 
+        -c 创建db
+        --pl 拉列表
+        --pk 拉k线数据
+        --pf 拉财务数据
+        -f 计算财务数据指标
+        -k 计算k线数据指标
+        -s <date> 开始拉k线数据和计算k线数据指标日期，格式:2011-01-01,
+        --kc 开始拉k线数据和计算k线数据指标code
+        -r 重试线数据和计算k线数失败的，
+                ''')
 
 
 def main(argv):
@@ -23,25 +36,18 @@ def main(argv):
     kpi_f = False;
     retry = False;
     start_date = datetime.datetime.now().strftime('%Y-%m-%d');
+    start_code=None;
 
     try:
-        opts, args = getopt.getopt(argv, "hcfkrs:", ["pl", "pk", 'pf', 'sdate='])
+        opts, args = getopt.getopt(argv, "hcfkrs:", ["pl", "pk", 'pf', 'kc='])
     except getopt.GetoptError:
-        print('Kmain.py -c --pl --pk --pf -f -k -s <date>  -r')
+
+        print_help();
         sys.exit(2)
 
     for opt, arg in opts:
         if opt == '-h':
-            print(''' 
-            -c 创建db
-            --pl 拉列表
-            --pk 拉k线数据
-            --pf 拉财务数据
-            -f 计算财务数据指标
-            -k 计算k线数据指标
-            -s <date> 开始拉k线数据和计算k线数据指标日期，格式:2011-01-01
-            -r 重试线数据和计算k线数失败的，
-            ''')
+            print_help()
             sys.exit()
         elif opt == '-c':
             create_db = True;
@@ -59,6 +65,8 @@ def main(argv):
             start_date = arg
         elif opt == '-r':
             retry = True;
+        elif opt=='--kc':
+            start_code=arg;
 
     from k.util.DbCreator import DbCreator;
     from k.manager.Kmanager import KManager;
@@ -90,7 +98,7 @@ def main(argv):
         print(K_RETRY)
 
     if(not os.path.exists(ConfigDict['k_fail_log'])):
-        new_df = pd.DataFrame(data=None, columns=['type', 'code']);
+        new_df = pd.DataFrame(data=None, columns=['date','type', 'code']);
         new_df.to_csv(ConfigDict['k_fail_log'], mode='w')
 
 
@@ -103,9 +111,9 @@ def main(argv):
         sp.pull();
 
     if (pull_k_data):
-        KManager.pull_data(start_date,retry=retry,retryDict=K_RETRY);
+        KManager.pull_data(start_date,start_code=start_code,retry=retry,retryDict=K_RETRY);
     if (kpi_k):
-        KManager.count_kpi(start_date,retry=retry,retryDict=K_RETRY);
+        KManager.count_kpi(start_date,start_code=start_code,retry=retry,retryDict=K_RETRY);
 
     if (pull_f_data):
         FinManager.pull_data();
