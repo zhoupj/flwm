@@ -6,3 +6,4 @@ k/.idea/*
 *.pyc
 *.log*
 config.txt
+**/log/**

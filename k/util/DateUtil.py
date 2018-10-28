@@ -1,17 +1,19 @@
 import  datetime;
 
+
 FORMAT='%Y-%m-%d';
 class DateUtil:
 
     @staticmethod
-    def getLongFormat():
-        return '%Y-%m-%d %H:%M:%S';
+    def getLongFormat(dt:datetime):
+        return  dt.strftime('%Y-%m-%d %H:%M:%S');
     @staticmethod
-    def getShortFromat():
-        return FORMAT;
+    def getShortFromat(dt:datetime):
+        return dt.strftime(FORMAT);
     @staticmethod
-    def getNewFormat():
-        return '%Y%m%d%H%M%S';
+    def getNewFormat(dt:datetime):
+        return dt.strftime('%Y%m%d%H%M%S');
+
 
     @staticmethod
     def getDateSeq(start:str):
@@ -32,6 +34,12 @@ class DateUtil:
     def getNextDay(dt:str):
         s = datetime.datetime.strptime(dt, FORMAT);
         s =s+datetime.timedelta(days=1)
+        return s.strftime(FORMAT);
+
+    @staticmethod
+    def getLastDay(dt: str):
+        s = datetime.datetime.strptime(dt, FORMAT);
+        s = s - datetime.timedelta(days=1)
         return s.strftime(FORMAT);
 
     @staticmethod
@@ -61,3 +69,4 @@ if (__name__ == '__main__'):
     print(DateUtil.getNextDay('2018-09-01'))
     print(DateUtil.getYear('2018-09-01'))
     print(DateUtil.getSeason('2018-08-30'))
+    print(DateUtil.getLongFormat(datetime.datetime.now()))

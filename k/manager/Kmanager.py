@@ -59,14 +59,17 @@ class KManager:
 
         KManager.to_csv(dict,'pd');
 
+    @staticmethod
+    def pull_data_hk(start_date=None, start_code=None, retry=False, retryDict=None):
+        shp = SharePuller();
+        df = shp.query_from_mysql();
 
-        #获取港资数据
-        dict={}
+        dict = {}
         hkp = HkHoldPuller();
         for dt in DateUtil.getDateSeq(start_date):
-            if (retry and code not in retryDict['ph']):
+            if (retry and dt not in retryDict['ph']):
                 continue;
-            dict[dt]=hkp.pull(dt);
+            dict[dt] = hkp.pull(dt);
             time.sleep(3)
         KManager.to_csv(dict, 'ph');
 
@@ -142,7 +145,7 @@ class KManager:
         i = 0;
         for k in dict.keys():
             if (dict[k] == False):
-                df.loc[i,'date']=DateUtil.getLongFormat();
+                df.loc[i,'date']=  DateUtil.getLongFormat(datetime.datetime.now());
                 df.loc[i, 'type']=type;
                 df.loc[i, 'code'] = k;
                 i=i+1;

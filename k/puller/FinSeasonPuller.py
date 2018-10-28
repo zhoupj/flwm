@@ -13,6 +13,5 @@ class FinSeasonPuller(FinYearPuller):
 
 if(__name__=='__main__'):
     fp=FinSeasonPuller()
-    df =fp.pull('603706',start='2018-06-30',end='2018-06-30',to_mysql=True)
-    df.to_csv('f.csv')
-    print(df)
+    fp.pull('600808',start='2018-06-30',end='2018-06-30',to_mysql=True)
+

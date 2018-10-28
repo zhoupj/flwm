@@ -8,6 +8,9 @@ import tushare as ts;
 from k.Config import Config;
 from k.puller.BasePuller import BasePuller;
 from k.util.DbCreator import DbCreator;
+from k.util.Logger import logger;
+
+
 
 bs.login();
 
@@ -65,10 +68,15 @@ class Kpuller(BasePuller):
                 pcfNcfTTM	市现率	精度：小数点后4位
                 pbMRQ	市净率	精度：小数点后4位
                 isST	是否ST	1是，0否'''
-        rs = bs.query_history_k_data(code,
+
+        try:
+            rs = bs.query_history_k_data(code,
                                      "date,code,open,high,low,close,volume,turn,tradestatus,peTTM,isST",
                                      start_date=start, end_date=end,
                                      frequency=freq, adjustflag="2")
+        except BaseException as e:
+            logger.exception('query_history_k_data error');
+            raise e
         # print(rs.data);
         data_list = []
         while (rs.error_code == '0') & rs.next():

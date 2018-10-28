@@ -6,7 +6,7 @@ from GlobalConfig import ConfigDict;
 
 class MyLogUtil:
 
-   def __init__(self,PATH,debug,console):
+   def __init__(self,PATH,debug,console,qualifier):
 
         # 创建一个logger
         d_handler =logging.handlers.TimedRotatingFileHandler(PATH+'digest.log', when='midnight', interval=1, backupCount=7,
@@ -14,7 +14,7 @@ class MyLogUtil:
         d_handler.setLevel(logging.INFO)
         d_handler.setFormatter(logging.Formatter("%(asctime)s|%(message)s"))
 
-        digest_log = logging.getLogger('digest');
+        digest_log = logging.getLogger('digest-'+qualifier);
         digest_log.setLevel(logging.INFO)
         digest_log.addHandler(d_handler)
 
@@ -23,12 +23,12 @@ class MyLogUtil:
         s_handler = logging.handlers.TimedRotatingFileHandler(PATH + 'suggest.log', when='midnight', interval=1,
                                                               backupCount=7,
                                                               atTime=datetime.time(0, 0, 0, 0))
-        suggest_log = logging.getLogger('suggest');
+        suggest_log = logging.getLogger('suggest'+qualifier);
         suggest_log.setLevel(logging.INFO)
         suggest_log.addHandler(s_handler);
 
         # 创建一个logger
-        logger = logging.getLogger('mylogger')
+        logger = logging.getLogger('mylogger'+qualifier)
         if(debug=='true'):
             logger.setLevel(logging.DEBUG)
         else:
@@ -57,7 +57,7 @@ class MyLogUtil:
         self.suggest_log=suggest_log;
 
 
-ml=MyLogUtil(ConfigDict['k_log_path'],ConfigDict['debug'],ConfigDict['console'])
+ml=MyLogUtil(ConfigDict['k_log_path'],ConfigDict['debug'],ConfigDict['console'],'k')
 logger=ml.logger;
 digest_log=ml.digest_log;
 
