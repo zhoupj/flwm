@@ -54,4 +54,4 @@ schedule.every().days.at("23:30").do(job_every_day)
 while True:
     schedule.run_pending()
     print('schedule run')
-    time.sleep(5)
+    time.sleep(60)

@@ -125,7 +125,7 @@ class DbCreator:
              name varchar(32) not null,
              alias varchar(32)  comment '别名',   
              is_member int default 0  comment '1会员，0不是',
-             member_deadline Date comment '会员到期日',
+             member_deadline Datetime comment '会员到期日',
              last_login_time Datetime comment '上一次登录时间',
              this_login_time Datetime comment '这次登录时间',
              login_days int default 0 comment '总共登录天数',
