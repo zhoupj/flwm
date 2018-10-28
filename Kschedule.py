@@ -6,7 +6,7 @@ from k.puller.SharePuller import SharePuller;
 from k.manager.Kmanager import KManager;
 from k.util.Logger import logger;
 from k.util.DateUtil import DateUtil;
-import calendar;
+
 
 
 def isWeekDay():

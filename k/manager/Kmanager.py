@@ -6,6 +6,7 @@ from k.algorithm.CreateRecord import CreateRecord;
 from k.algorithm.DeviationsRatio import DeviationsRatio;
 from k.algorithm.FluctionRatio import FluctionRatio;
 from k.algorithm.IncrementRatio import IncrementRatio
+from k.algorithm.TotalMarket import TotalMarket;
 from k.algorithm.Ma import Ma;
 from k.algorithm.PeRank import PeRank;
 from k.algorithm.Pipeline import Pipeline;
@@ -123,7 +124,7 @@ class KManager:
 
         logger.info('start to kpi:'+code+' size:'+str(df.shape[0]));
         #流水线
-        succ=Pipeline.execute(PreProcess(),[CreateRecord(),DeviationsRatio(),FluctionRatio(),
+        succ=Pipeline.execute(PreProcess(),[TotalMarket(),CreateRecord(),DeviationsRatio(),FluctionRatio(),
                           IncrementRatio(),Ma(),TurnRatio(),PeRank()],code,df,start_date)
 
         logger.info('end to kpi:'+code)
@@ -156,8 +157,8 @@ class KManager:
 if (__name__ == '__main__'):
     #pm = PandasToMysql();
     #KManager.kpi_m('2018-09-28',pm)
-    p_dt='2018-10-22';
+    p_dt='2018-10-26';
     dt=datetime.datetime.now().strftime('%Y-%m-%d')
-    KManager.pull_data(p_dt);
+    #KManager.pull_data(p_dt);
     KManager.count_kpi(p_dt,s=True,m=True);
     #KManager.kpi_m('2018-10-08',PandasToMysql())
