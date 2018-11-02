@@ -163,8 +163,9 @@ class DbCreator:
              user_id int not null,
              share_code varchar(6) not null,
              add_time datetime not null,
+             remove_time datetime,
              inc_flu  double(5,2) comment '增长幅度',
-             s_group int comment '股票分组:1 观察2候选3 持有4 淘汰',
+             s_group int comment '股票分组:1 观察 2候选 3 持有4 淘汰',
              tag varchar(500) comment '标记',
              feature text,
              UNIQUE KEY idx_uq_code (user_id,share_code,s_group)

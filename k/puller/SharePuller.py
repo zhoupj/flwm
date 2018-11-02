@@ -86,9 +86,8 @@ class SharePuller(TBasePuller):
 
 #test
 if (__name__ == '__main__'):
-    sp=SharePuller ();
-    #df=sp.pull_from_tushare();
-    #print(df);
-    df=sp.query_from_mysql()
-    df.to_csv('./s.csv')
-    print(df)
+    df = ts.get_stock_basics();
+
+    df=df.sort_values(by=['code'])
+    df.to_csv('s.csv')
+    print(df);

@@ -157,8 +157,8 @@ class KManager:
 if (__name__ == '__main__'):
     #pm = PandasToMysql();
     #KManager.kpi_m('2018-09-28',pm)
-    p_dt='2018-10-26';
+    p_dt='2018-10-10';
     dt=datetime.datetime.now().strftime('%Y-%m-%d')
     #KManager.pull_data(p_dt);
-    KManager.count_kpi(p_dt,s=True,m=True);
+    KManager.count_kpi(p_dt,s=False,m=True);
     #KManager.kpi_m('2018-10-08',PandasToMysql())

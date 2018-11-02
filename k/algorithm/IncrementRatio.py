@@ -1,7 +1,10 @@
 from k.algorithm.Base import Base;
 from k.Config import Config;
+from k.util.DbCreator import DbCreator;
+from k.util.PandasToMysql import pm;
 import  numpy as np;
 import pandas as pd;
+
 
 INC_50=50;#下标从0开始
 INC_120=120;
@@ -22,7 +25,7 @@ class IncrementRatio(Base):
            df.loc[i, Config.incOfOneYear] = self.__add_increment__(i, INC_250, df);
            df.loc[i,Config.incOf2d]=self.__add_increment__(i,2,df);
 
-        return df[[Config.id,Config.incOfOneYear,Config.incOfHalfYear,Config.incOf50d]]
+        return df[[Config.id,Config.incOfOneYear,Config.incOfHalfYear,Config.incOf50d,Config.incOf2d]]
 
     def __add_increment__(self, i, freq, df):
         freq = freq - 1;
@@ -34,17 +37,11 @@ class IncrementRatio(Base):
 
 #main
 if (__name__ == '__main__'):
-    INC_50=2;
-    INC_120=5;
-    INC_250=10;
-    nd=np.random.randint(1,100,size=(20,3));
-    df=pd.DataFrame(nd,columns=['close','low','high'])
-    df2=df.copy()
-    inR=IncrementRatio();
-    inR.run('test',df)
-    print(df)
+    df = pm.query(DbCreator.share_data_day, where='code="000001" and trade_date>="2018-10-01"');
+    ir=IncrementRatio();
+    ir.run('000001',df,to_mysql=False)
+    print(df[[Config.db_date,Config.incOf2d]])
 
-    inR.run('test', df2,start=19)
-    print(df2)
+
 
 

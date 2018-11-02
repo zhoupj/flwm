@@ -40,13 +40,21 @@ class FinManager:
             nma.run(code,to_mysql=True,type=1);
         nms = NetProfitSort();
         nms8= NetProfitSort8();
-        for dt in['2017-09-30','2017-12-31','2018-03-31','2018-06-30']:
+        for dt in['2017-09-30','2017-12-31','2018-03-31','2018-06-30','2018-09-30']:
             nms.run(dt,to_mysql=True,type=1)
             nms8.run(dt,to_mysql=True,type=1)
 
 
 if(__name__=='__main__'):
-    FinManager.count_kpi();
+    shp = SharePuller();
+    df = shp.query_from_mysql();
+    for index, row in df.iterrows():
+        code = row['code'];
+    nms = NetProfitSort();
+    nms8 = NetProfitSort8();
+    for dt in [ '2018-09-30']:
+        nms.run(dt, to_mysql=True, type=1)
+        nms8.run(dt, to_mysql=True, type=1)
 
 
 

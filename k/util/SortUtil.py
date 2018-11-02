@@ -30,7 +30,7 @@ class SortUtil:
 
         else:
 
-            rank_list = rs.map(lambda x:int((x+base-1)/base));
+            rank_list = rs.map(lambda x:int((x+base-1)/base)-1);
 
         rank_list=rank_list.values;#转换为list
         if(serial.shape[0]==dedup_count):
@@ -47,8 +47,10 @@ class SortUtil:
 
 if (__name__ == '__main__'):
     import pandas as pd;
-    df=pd.DataFrame([[100,8],[4,2],[3,5],[9,6],[0,4],[5,39],[36,98],[6,23],[9,3],[23,2]],columns=['a','b']);
+    df=pd.DataFrame([[100,8],[4,2],[3,5],[9,6],[0,4],[5,39],[36,98],[6,23],[9,3],[23,2],[17,68]],columns=['a','b']);
     print(df)
     df=df['a'];
-    print(SortUtil.rank(df, num=20))
-    print(SortUtil.rank_list(df,num=20))
+    #print(SortUtil.rank(df, num=20))
+    print(df.values)
+    print(SortUtil.rank_list(df,num=5))
+
