@@ -159,6 +159,7 @@ if (__name__ == '__main__'):
     #KManager.kpi_m('2018-09-28',pm)
     p_dt='2018-10-10';
     dt=datetime.datetime.now().strftime('%Y-%m-%d')
-    #KManager.pull_data(p_dt);
-    KManager.count_kpi(p_dt,s=False,m=True);
+    KManager.pull_data_hk(p_dt)
+    #KManager.count_kpi(p_dt,s=False,m=True);
     #KManager.kpi_m('2018-10-08',PandasToMysql())
+

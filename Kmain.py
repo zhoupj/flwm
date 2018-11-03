@@ -1,16 +1,16 @@
 import sys, getopt
 import datetime;
 import pandas as pd;
-import  numpy as np;
+import numpy as np;
 import os;
 
-
-K_RETRY={
-  'pd':[],
-  'ph':[],
-  'ks':[],
-  'km':[]
+K_RETRY = {
+    'pd': [],
+    'ph': [],
+    'ks': [],
+    'km': []
 }
+
 
 def print_help():
     print('python Kmain.py <options>[as follows]')
@@ -23,7 +23,7 @@ def print_help():
         -f 计算财务数据指标
         -k 计算k线数据指标
         -s <date> 开始拉k线数据和计算k线数据指标日期，格式:2011-01-01,
-        --kc 开始拉k线数据和计算k线数据指标code
+        --sc 开始拉k线数据和计算k线数据指标code
         -r 重试线数据和计算k线数失败的，
                 ''')
 
@@ -38,10 +38,10 @@ def main(argv):
     kpi_f = False;
     retry = False;
     start_date = datetime.datetime.now().strftime('%Y-%m-%d');
-    start_code=None;
+    start_code = None;
 
     try:
-        opts, args = getopt.getopt(argv, "hcfkrs:", ["pl", "pk","ph" 'pf', 'kc='])
+        opts, args = getopt.getopt(argv, 'hcfkrs:', ['pl', 'pk', 'ph','pf', 'sc='])
     except getopt.GetoptError:
 
         print_help();
@@ -57,8 +57,8 @@ def main(argv):
             pull_list = True;
         elif opt == '--pk':
             pull_k_data = True;
-        elif opt=='--ph':
-            pull_k_h_data=True;
+        elif opt == '--ph':
+            pull_k_h_data = True;
         elif opt == '--pf':
             pull_f_data = True;
         elif opt == '-k':
@@ -69,8 +69,8 @@ def main(argv):
             start_date = arg
         elif opt == '-r':
             retry = True;
-        elif opt=='--kc':
-            start_code=arg;
+        elif opt == '--sc':
+            start_code = arg;
 
     from k.util.DbCreator import DbCreator;
     from k.manager.Kmanager import KManager;
@@ -80,13 +80,13 @@ def main(argv):
 
     if (retry):
 
-        df=pd.DataFrame();
+        df = pd.DataFrame();
         if os.path.exists(ConfigDict['k_fail_log']):
-            df = pd.read_csv(ConfigDict['k_fail_log'], index_col=0,dtype={'code':np.str,'type':np.str});
+            df = pd.read_csv(ConfigDict['k_fail_log'], index_col=0, dtype={'code': np.str, 'type': np.str});
             print(df)
             if os.path.exists(ConfigDict['k_fail_log'] + '.pre'):
-                 os.remove(ConfigDict['k_fail_log'] + '.pre')
-            os.rename(ConfigDict['k_fail_log'],ConfigDict['k_fail_log'] + '.pre')
+                os.remove(ConfigDict['k_fail_log'] + '.pre')
+            os.rename(ConfigDict['k_fail_log'], ConfigDict['k_fail_log'] + '.pre')
             new_df = pd.DataFrame(data=None, columns=['type', 'code']);
             new_df.to_csv(ConfigDict['k_fail_log'], mode='w')
 
@@ -101,10 +101,9 @@ def main(argv):
                 K_RETRY['km'].append(df.loc[i, 'code']);
         print(K_RETRY)
 
-    if(not os.path.exists(ConfigDict['k_fail_log'])):
-        new_df = pd.DataFrame(data=None, columns=['date','type', 'code']);
+    if (not os.path.exists(ConfigDict['k_fail_log'])):
+        new_df = pd.DataFrame(data=None, columns=['date', 'type', 'code']);
         new_df.to_csv(ConfigDict['k_fail_log'], mode='w')
-
 
     if (create_db):
         dc = DbCreator()
@@ -114,22 +113,24 @@ def main(argv):
         sp = SharePuller();
         sp.pull();
 
+
     if (pull_k_data):
-        KManager.pull_data(start_date,start_code=start_code,retry=retry,retryDict=K_RETRY);
-        KManager.pull_data_hk(start_date,start_code=start_code,retry=retry,retryDict=K_RETRY);
-    if(pull_k_h_data):
+        KManager.pull_data(start_date, start_code=start_code, retry=retry, retryDict=K_RETRY);
+        KManager.pull_data_hk(start_date, start_code=start_code, retry=retry, retryDict=K_RETRY);
+
+    if (pull_k_h_data):
         KManager.pull_data_hk(start_date, start_code=start_code, retry=retry, retryDict=K_RETRY);
     if (kpi_k):
-        KManager.count_kpi(start_date,start_code=start_code,retry=retry,retryDict=K_RETRY);
+        KManager.count_kpi(start_date, start_code=start_code, retry=retry, retryDict=K_RETRY);
 
     if (pull_f_data):
         FinManager.pull_data();
     if (kpi_f):
         FinManager.count_kpi();
 
-
     print('finish OK')
 
 
 if __name__ == "__main__":
+    print(sys.argv[1:])
     main(sys.argv[1:])
