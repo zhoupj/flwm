@@ -41,7 +41,7 @@ def main(argv):
     start_code=None;
 
     try:
-        opts, args = getopt.getopt(argv, "hcfkrs:", ["pl", "pk", 'pf', 'kc='])
+        opts, args = getopt.getopt(argv, "hcfkrs:", ["pl", "pk","ph" 'pf', 'kc='])
     except getopt.GetoptError:
 
         print_help();
