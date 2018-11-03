@@ -17,7 +17,8 @@ def print_help():
     print(''' 
         -c 创建db
         --pl 拉列表
-        --pk 拉k线数据
+        --pk 拉k线数据（包括港资数据）
+        --ph 仅拉取港资数据
         --pf 拉财务数据
         -f 计算财务数据指标
         -k 计算k线数据指标
@@ -31,6 +32,7 @@ def main(argv):
     create_db = False;
     pull_list = False;
     pull_k_data = False;
+    pull_k_h_data = False;
     pull_f_data = False;
     kpi_k = False;
     kpi_f = False;
@@ -55,6 +57,8 @@ def main(argv):
             pull_list = True;
         elif opt == '--pk':
             pull_k_data = True;
+        elif opt=='--ph':
+            pull_k_h_data=True;
         elif opt == '--pf':
             pull_f_data = True;
         elif opt == '-k':
@@ -112,6 +116,9 @@ def main(argv):
 
     if (pull_k_data):
         KManager.pull_data(start_date,start_code=start_code,retry=retry,retryDict=K_RETRY);
+        KManager.pull_data_hk(start_date,start_code=start_code,retry=retry,retryDict=K_RETRY);
+    if(pull_k_h_data):
+        KManager.pull_data_hk(start_date, start_code=start_code, retry=retry, retryDict=K_RETRY);
     if (kpi_k):
         KManager.count_kpi(start_date,start_code=start_code,retry=retry,retryDict=K_RETRY);
 
