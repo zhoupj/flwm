@@ -1,11 +1,7 @@
 import schedule
 import time
 import datetime;
-from k.manager.FinManager import FinManager;
-from k.puller.SharePuller import SharePuller;
-from k.manager.Kmanager import KManager;
-from k.util.Logger import logger;
-from k.util.DateUtil import DateUtil;
+
 
 
 
@@ -16,6 +12,11 @@ def isWeekDay():
     return False;
 
 def job_every_month():
+    from k.manager.FinManager import FinManager;
+    from k.puller.SharePuller import SharePuller;
+    from k.manager.Kmanager import KManager;
+    from k.util.Logger import logger;
+    from k.util.DateUtil import DateUtil;
 
     if(isWeekDay()):
        return
@@ -27,6 +28,11 @@ def job_every_month():
     FinManager.count_kpi();
 
 def job_every_day():
+    from k.manager.FinManager import FinManager;
+    from k.puller.SharePuller import SharePuller;
+    from k.manager.Kmanager import KManager;
+    from k.util.Logger import logger;
+    from k.util.DateUtil import DateUtil;
 
     if (isWeekDay()):
         return
@@ -45,9 +51,9 @@ def job_min():
     print('schedule:'+td)
 
 
-schedule.every(15).days.at("23:00").do(job_every_month)
+schedule.every(7).days.at("23:30").do(job_every_month)
 schedule.every().days.at("18:30").do(job_every_day)
-schedule.every().days.at("23:30").do(job_every_day)
+schedule.every().days.at("00:26").do(job_every_day)
 #schedule.every(5).seconds.do(job_min)
 
 
