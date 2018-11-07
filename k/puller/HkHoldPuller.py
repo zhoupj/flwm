@@ -65,7 +65,9 @@ class HkHoldPuller(TBasePuller):
         if(dt==None):
             dt=datetime.datetime.now().strftime('%Y-%m-%d');
 
-        params_dict['filter']=params_dict['filter'].replace('2018-10-12',dt);
+        params_dict['filter']="(MARKET in ('001','003'))(HDDATE=^"+dt+"^)";
+
+        logger.debug('dt:'+params_dict['filter'])
 
         # 构造session ，用于存储browser和server交互之间的cookie
         self.session = requests.session();
