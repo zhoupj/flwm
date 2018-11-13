@@ -17,6 +17,7 @@ def job_every_month():
     from k.manager.Kmanager import KManager;
     from k.util.Logger import logger;
     from k.util.DateUtil import DateUtil;
+    from k.util.PandasToMysql import pm;
 
     if(isWeekDay()):
        return
@@ -27,12 +28,15 @@ def job_every_month():
     FinManager.pull_data();
     FinManager.count_kpi();
 
+    pm.close();
+
 def job_every_day():
     from k.manager.FinManager import FinManager;
     from k.puller.SharePuller import SharePuller;
     from k.manager.Kmanager import KManager;
     from k.util.Logger import logger;
     from k.util.DateUtil import DateUtil;
+    from k.util.PandasToMysql import pm;
 
     if (isWeekDay()):
         return
@@ -44,6 +48,8 @@ def job_every_day():
     KManager.pull_data_hk(DateUtil.getLastDay(td))
     KManager.count_kpi(td);
 
+    pm.close();
+
 def job_min():
 
     print(isWeekDay())
@@ -53,7 +59,7 @@ def job_min():
 
 schedule.every(7).days.at("23:30").do(job_every_month)
 schedule.every().days.at("18:30").do(job_every_day)
-schedule.every().days.at("00:26").do(job_every_day)
+schedule.every().days.at("23:00").do(job_every_day)
 #schedule.every(5).seconds.do(job_min)
 
 

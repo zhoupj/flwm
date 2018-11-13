@@ -98,6 +98,4 @@ class FinYearPuller(BasePuller):
 
 if(__name__=='__main__'):
     fp=FinYearPuller()
-    df =fp.pull('000860',start='2018-06-30',end='2018-06-30',to_mysql=True)
-    df.to_csv('f.csv')
-    print(df)
+    fp.pull('000860',start='2018-06-30',end='2018-06-30',to_mysql=True)
