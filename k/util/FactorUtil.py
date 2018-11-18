@@ -89,6 +89,55 @@ class FactorUtil:
                 else:
                     df.loc[i, str(ct) + 'ma'] = df.loc[start,close];
 
+    #计算趋势线y=ax+b 得（a,b)
+    @staticmethod
+    def best_coordinate_for_trend(item:[],direct='h'):
+        factors = [];
+        # y=ax+b;
+        for i, y1 in enumerate(item):
+            j = i + 1;
+            while (j < len(item)):
+                a = (item[j] - item[i]) / (j - i);
+                b = item[j] - a * j;
+                factors.append({'i': i, 'j': j, 'a': a, 'b': b})
+                j += 1;
+
+
+        best_factor={'i': 0, 'j': 0, 'a': 0, 'b': 0};
+        # filter
+        for factor in factors:
+            a = factor['a'];
+            b = factor['b'];
+            use = 1;
+            for x, val in enumerate(item):
+                y = a * x + b;
+                if (direct=='h' and y < item[x] * 0.9999):
+                    use = 0;
+                    break;
+                elif(direct=='l' and y> item[x] * 0.9999):
+                    use=0;
+                    break;
+
+            if (use):
+                if (abs(best_factor['i'] - best_factor['j']) < abs(factor['i'] - factor['j'])):
+                    best_factor=factor;
+        return (best_factor['a'],best_factor['b']);
+
+    @staticmethod
+    #'h' 突破上，'l：突破下
+    def is_reverse(a,b,yy,direct='h',base=12):
+
+        y=a*base+b;
+
+        if(direct=='h' and yy>y):
+            return 1;
+
+        if(direct=='l' and yy<y):
+            return 1;
+
+        return 0;
+
+
 
 if __name__ == '__main__':
     df = pd.DataFrame(data=np.random.randint(30,100, size=(100, 5)), columns=['open', 'high', 'low', 'close', 'volume'])
@@ -108,5 +157,8 @@ if __name__ == '__main__':
     print(FactorUtil.expma_list([1, 2, 3, 7, 6,7,4]))
     print(FactorUtil.expma_list([3, 2, 3, 3, 3,3,4]))
     print(FactorUtil.expma_list([9, 5, 6, 1, 0,2,1]))
+
+    best=FactorUtil.best_coordinate_for_trend([12,34,4,45,34,33,2])
+    print(best)
 
 

@@ -163,5 +163,5 @@ class Kpuller(BasePuller):
 # test
 if (__name__ == '__main__'):
     kp = Kpuller();
-    df = kp.pull('002228', '2018-10-08', '2018-10-15', False)
+    df = kp.pull('300394', '2016-10-08', '2018-11-25', True)
     print(df)

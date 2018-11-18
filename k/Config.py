@@ -20,6 +20,7 @@ class Config:
     isHighOfHistory='isHighOfHistory';#是否创历史新高
     isLowOfyear='isLowOfyear';#是否创一年新低
     isLowOfHistory = 'isLowOfHistory';  # 是否创一年新低
+    isMonthReverse='is_m_r';
 
     incOfOneYear='incOf250';#一年涨幅，单位%,今日收盘价和250个交易日前的收盘前比较（停牌的不算）
     incOfHalfYear='incOf120';#半年涨幅，单位%，。。。。。120.。。。。。。。。。。。

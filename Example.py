@@ -2,8 +2,10 @@
 import pandas as pd
 import json
 from app.common.AppException import AppException;
+from k.util.FactorUtil import FactorUtil;
 import  os
 import numpy as np;
+import matplotlib.pyplot as plt;
 
 df=pd.DataFrame(data={'Num':[1,2,3],'char':['a','我','c']})
 print(df.columns.values)
@@ -74,3 +76,25 @@ if(e):
     print ('e');
 if(f):
     print ('f');
+
+
+total_item=[13,23,45,21,34,4,32,4,21,23,1,23,35]
+item=total_item[0:12]
+print(item)
+
+rst= FactorUtil.best_coordinate_for_trend(item);
+rst_a=rst[0]
+rst_b=rst[1]
+print('result:',rst_a,rst_b);
+# plt.figure();
+# plt.bar(range(len(total_item)),total_item);
+# plt.ylim(0, 100)  # 指定Y轴的plt.ylim(0, 600)  # 指定Y轴的高度高度
+# plt.plot([0,12],[rst_b,12*rst_a+rst_b],'r-')
+# plt.show();
+
+
+a={}
+a['a']=1;
+val=a.get('b')
+print(val)
+

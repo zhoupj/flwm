@@ -20,6 +20,7 @@ def print_help():
         --pk 拉k线数据（包括港资数据）
         --ph 仅拉取港资数据
         --pf 拉财务数据
+        --pmk 拉月线数据和计算月线的参数a,b
         -f 计算财务数据指标
         -k 计算k线数据指标
         -s <date> 开始拉k线数据和计算k线数据指标日期，格式:2011-01-01,
@@ -34,6 +35,7 @@ def main(argv):
     pull_k_data = False;
     pull_k_h_data = False;
     pull_f_data = False;
+    pull_m_k_data=False;
     kpi_k = False;
     kpi_f = False;
     retry = False;
@@ -41,7 +43,7 @@ def main(argv):
     start_code = None;
 
     try:
-        opts, args = getopt.getopt(argv, 'hcfkrs:', ['pl', 'pk', 'ph','pf', 'sc='])
+        opts, args = getopt.getopt(argv, 'hcfkrs:', ['pl', 'pk', 'ph','pf','pmk', 'sc='])
     except getopt.GetoptError:
 
         print_help();
@@ -71,6 +73,8 @@ def main(argv):
             retry = True;
         elif opt == '--sc':
             start_code = arg;
+        elif opt=='--pmk':
+            pull_m_k_data=True;
 
     from k.util.DbCreator import DbCreator;
     from k.manager.Kmanager import KManager;
@@ -120,13 +124,19 @@ def main(argv):
 
     if (pull_k_h_data):
         KManager.pull_data_hk(start_date, start_code=start_code, retry=retry, retryDict=K_RETRY);
+
+    if(pull_m_k_data):
+        KManager.pull_data_month_and_month_kpi(start_date, start_code=start_code, retry=retry, retryDict=K_RETRY);
+
     if (kpi_k):
-        KManager.count_kpi(start_date, start_code=start_code, retry=retry, retryDict=K_RETRY);
+        KManager.count_kpi(start_date, start_code=start_code, retry=retry, retryDict=K_RETRY,alg=alg);
 
     if (pull_f_data):
         FinManager.pull_data();
     if (kpi_f):
         FinManager.count_kpi();
+
+
 
     print('finish OK')
 

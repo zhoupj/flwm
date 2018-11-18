@@ -6,6 +6,7 @@ class DbCreator:
     share_data_week='share_data_week';
     share_data_month='share_data_month';
     share_data_finance='share_data_finance';
+    share_data_month='share_data_month';
 
     __share__base_sql='''
         create table if not exists share_data_basic(
@@ -39,6 +40,7 @@ class DbCreator:
             isHighOfHistory int ,
             isLowOfyear int,
             isLowOfHistory int,
+            is_m_r int comment '1突破月线高点,2突破月线低点,0无',
         
             incOf250 double(12,3) comment '一年的涨幅',
             incOf120 double(12,3), 
@@ -86,6 +88,27 @@ class DbCreator:
             UNIQUE KEY idx_uq_code (code,trade_date)
         )ENGINE=InnoDB DEFAULT CHARSET=utf8;
     '''
+
+    __share_data_month_sql = '''
+            create table if not exists share_data_month(
+                 id int primary key auto_increment,
+                 trade_date char(7) not null comment '2018-10' ,
+                 code varchar(6) not null,
+                 open double(12,3),
+                 high double(12,3),
+                 low double(12,3),
+                 close double(12,3),
+                 volume bigint,
+                 turn double(12,3) comment '换手率',
+                 ha double(12,3) comment 'y=ax+b 最高价包括自己在内之前12个月',
+                 hb double(12,3) comment 'y=ax+b 12个月',
+                 la double(12,3) comment 'y=ax+b 最低价包括自己在内之前12个月',
+                 lb double(12,3) comment 'y=ax+b 12个月',
+                 h_reverse int comment '最高价相当于之前之前12个月是否反转',
+                 l_reverse int comment '最低价....',
+                UNIQUE KEY idx_uq_code (code,trade_date)
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+        '''
 
     __share_data_finance_sql='''
         create table if not exists share_data_finance(
@@ -194,6 +217,7 @@ class DbCreator:
         pm.create_table(DbCreator.__share_article_sql);
         pm.create_table(DbCreator.__share_buy_record);
         pm.create_table(DbCreator.__share_member_activity);
+        pm.create_table(DbCreator.__share_data_month_sql);
 
         print('over')
 

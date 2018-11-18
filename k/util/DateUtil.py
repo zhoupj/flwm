@@ -43,6 +43,19 @@ class DateUtil:
         return s.strftime(FORMAT);
 
     @staticmethod
+    def getLastMonthForShort(dt: str):
+        year=dt[0:4];
+        month=dt[5:7];
+        month=int(month)-1;
+        if(month==0):
+            year=int(year)-1;
+            month=12;
+
+        month='0'+str(month) if month<10 else str(month)
+        year=str(year);
+        return year+'-'+month;
+
+    @staticmethod
     def getYear(dt:str):
         if(dt==None):
             return 0;
@@ -70,3 +83,7 @@ if (__name__ == '__main__'):
     print(DateUtil.getYear('2018-09-01'))
     print(DateUtil.getSeason('2018-08-30'))
     print(DateUtil.getLongFormat(datetime.datetime.now()))
+    print(DateUtil.getLastMonthForShort('2018-01-01'))
+    print(DateUtil.getLastMonthForShort('2018-05-31'))
+    print(DateUtil.getLastMonthForShort('2018-05-01'))
+    print(DateUtil.getLastMonthForShort('2018-12-31'))
