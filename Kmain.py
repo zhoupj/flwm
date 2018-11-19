@@ -129,7 +129,7 @@ def main(argv):
         KManager.pull_data_month_and_month_kpi(start_date, start_code=start_code, retry=retry, retryDict=K_RETRY);
 
     if (kpi_k):
-        KManager.count_kpi(start_date, start_code=start_code, retry=retry, retryDict=K_RETRY,alg=alg);
+        KManager.count_kpi(start_date, start_code=start_code, retry=retry, retryDict=K_RETRY);
 
     if (pull_f_data):
         FinManager.pull_data();
