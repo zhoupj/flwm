@@ -28,7 +28,6 @@ def job_every_month():
     FinManager.pull_data();
     FinManager.count_kpi();
 
-    pm.close();
 
 def job_every_day():
     from k.manager.FinManager import FinManager;
@@ -48,7 +47,6 @@ def job_every_day():
     KManager.pull_data_hk(DateUtil.getLastDay(td))
     KManager.count_kpi(td);
 
-    pm.close();
 
 def job_min():
 
