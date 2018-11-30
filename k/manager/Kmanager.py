@@ -29,6 +29,22 @@ import  datetime;
 
 THREAD_NUM=1;
 
+import threading
+
+
+# class myThread(threading.Thread):
+#     def __init__(self, code, start_data,end_data, dict):
+#         threading.Thread.__init__(self)
+#         self.code = code;
+#         self.start_data = start_data;
+#         self.end_date = end_data;
+#         self.dict=dict;
+#
+#     def run(self):
+#         dict[code] = kp.pull(code, start, end);
+
+
+
 class KManager:
 
     @staticmethod
@@ -60,6 +76,36 @@ class KManager:
             time.sleep(1.5)
 
         KManager.to_csv(dict,'pd');
+
+    @staticmethod
+    def pull_data_and_count_kpi(start_date=None, start_code=None, retry=False, retryDict=None):
+
+        shp = SharePuller();
+        df = shp.query_from_mysql();
+
+        now = datetime.datetime.now()
+        end = now.strftime('%Y-%m-%d');
+
+        dict = {};
+        # 拉取数据&保存到DB
+        kp = Kpuller();
+        # 获取基本数据，按列表计算
+        for index, row in df.iterrows():
+            code = row['code'];
+            start = str(row['timeToMarket']);
+
+            if (start_code and code < start_code):
+                continue;
+
+            if (retry and code not in retryDict['pd']):
+                continue;
+
+            if (start_date != None and start < start_date):
+                start = start_date;
+            dict[code] = kp.pull(code, start, end);
+            time.sleep(1.5)
+
+        KManager.to_csv(dict, 'pd');
 
     @staticmethod
     def pull_data_hk(start_date=None, start_code=None, retry=False, retryDict=None):
