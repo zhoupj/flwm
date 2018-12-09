@@ -232,6 +232,7 @@ class DbCreator:
        '''
     
     __alter_sql = '''
+            alter table share_data_day add column valid int default 1;
            alter table share_data_day modify column open double(12,2) default 0;
            alter table share_data_day modify column  high double(12,2) default 0;
             alter table share_data_day modify column low double(12,2) default 0;

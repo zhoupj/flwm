@@ -195,7 +195,10 @@ class KManager:
                     if (retry and code not in retryDict['km']):
                             continue;
                     dict[dt]=KManager.kpi_m(dt, pm);
+                    #更新数据
+                    pm.execute("update share_data_day set valid=1 where dt=%s" % (dt))
             KManager.to_csv(dict, 'km');
+
 
 
 

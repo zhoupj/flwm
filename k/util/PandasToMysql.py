@@ -43,7 +43,7 @@ class PandasToMysql:
 
 
     def create_table(self,sql):
-        conn = self.pool.get_connection()  # 以后每次需要数据库连接就是用connection（）函数获取连接就好了
+        conn = self.get_conn()  # 以后每次需要数据库连接就是用connection（）函数获取连接就好了
         cur = conn.cursor()
         try:
             cur.execute(sql);
@@ -53,6 +53,17 @@ class PandasToMysql:
             cur.close()
             conn.close()
 
+    def execute(self,sql):
+        conn = self.get_conn()  # 以后每次需要数据库连接就是用connection（）函数获取连接就好了
+        cur = conn.cursor()
+        try:
+            cur.execute(sql);
+            conn.commit();
+        except BaseException as be:
+            print('create table error:',be)
+        finally:
+            cur.close()
+            conn.close()
 
     def save(self, table_name, df, primaryKeys=[Config.code, Config.db_date]):
         if (df.empty):
