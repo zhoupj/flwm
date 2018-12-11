@@ -196,7 +196,7 @@ class KManager:
                             continue;
                     dict[dt]=KManager.kpi_m(dt, pm);
                     #更新数据
-                    pm.execute("update share_data_day set valid=1 where dt=%s" % (dt))
+                    pm.execute("update share_data_day set valid=1 where trade_date='%s'" % (dt))
             KManager.to_csv(dict, 'km');
 
 

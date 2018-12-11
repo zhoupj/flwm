@@ -57,6 +57,7 @@ class PandasToMysql:
         conn = self.get_conn()  # 以后每次需要数据库连接就是用connection（）函数获取连接就好了
         cur = conn.cursor()
         try:
+            logger.info('update sql:'+sql);
             cur.execute(sql);
             conn.commit();
         except BaseException as be:
