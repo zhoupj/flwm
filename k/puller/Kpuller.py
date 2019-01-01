@@ -31,6 +31,9 @@ class Kpuller(BasePuller):
     def __pull_kdata_from_baostock_s(self, code, start_date, end_date):
 
         df = self.__parse_baostock_data(code, start_date, end_date, 'd')
+
+        if(df.shape[0]==0):
+            raise Exception("no data from baostock");
         # parse
         df["id"] = np.arange(df.shape[0]);
         df.set_index('id', inplace=True);
